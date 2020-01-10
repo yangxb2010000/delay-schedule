@@ -36,8 +36,8 @@ public class TimerTest {
                     taskCount.decrementAndGet();
                     long delayTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
                     try {
-                        //允许的延迟任务误差50ms
-                        Assert.assertTrue(delayTime < delay && delayTime < delay + 50);
+                        //允许的延迟任务误差20ms
+                        Assert.assertTrue(delayTime > delay - 20 && delayTime < delay + 20);
                         System.out.println("expected delay + " + delay + ", delayTime: " + delayTime);
                     } catch (Throwable ex) {
                         ex.printStackTrace();
