@@ -1,4 +1,4 @@
-package com.tim.delayschedule.core.schedulemanager;
+package com.tim.delayschedule.server.schedulemanager;
 
 import com.tim.delayschedule.core.model.DelayTask;
 

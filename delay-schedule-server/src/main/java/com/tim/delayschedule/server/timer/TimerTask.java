@@ -1,4 +1,4 @@
-package com.tim.delayschedule.core.timer;
+package com.tim.delayschedule.server.timer;
 
 /**
  * 任务
@@ -25,8 +25,13 @@ public class TimerTask {
      */
     protected TimerTask pre;
 
-    public TimerTask(long delay, Runnable task) {
-        this.delay = System.currentTimeMillis() + delay;
+    /**
+     * 构建TimerTask实例
+     * @param scheduleTime task计划执行时间，ms
+     * @param task 执行的task
+     */
+    public TimerTask(long scheduleTime, Runnable task) {
+        this.delay = delay;
         this.task = task;
         this.next = null;
         this.pre = null;

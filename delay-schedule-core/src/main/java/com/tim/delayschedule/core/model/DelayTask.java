@@ -12,6 +12,11 @@ public class DelayTask {
      * id task的唯一标识
      */
     private String id;
+
+    /**
+     * slotId
+     */
+    private int slotId = -1;
     /**
      * task类型
      */
@@ -29,7 +34,7 @@ public class DelayTask {
     /**
      * task计划执行时间
      */
-    private Long shceduleTime;
+    private Long scheduleTime;
 
     /**
      * task实际执行时间
@@ -40,4 +45,9 @@ public class DelayTask {
      * task完成时间
      */
     private Long finishedTime;
+
+    /**
+     * 执行次数
+     */
+    private int executedCount;
 }

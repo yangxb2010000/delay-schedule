@@ -7,10 +7,16 @@
     <groupId>com.tim</groupId>
     <artifactId>delay-schedule</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <modules>
         <module>delay-schedule-core</module>
+        <module>delay-schedule-server</module>
+        <module>delay-schedule-client</module>
     </modules>
+
+    <properties>
+        <delay.schedule.version>0.1-SNAPSHOT</delay.schedule.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -27,6 +33,16 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.tim</groupId>
+                <artifactId>delay-schedule-core</artifactId>
+                <version>${delay.schedule.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
