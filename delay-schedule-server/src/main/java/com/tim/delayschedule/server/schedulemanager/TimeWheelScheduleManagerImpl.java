@@ -3,6 +3,7 @@ package com.tim.delayschedule.server.schedulemanager;
 import com.tim.delayschedule.core.model.DelayTask;
 import com.tim.delayschedule.core.sharding.SlotSharding;
 import com.tim.delayschedule.core.sharding.ZookeeperSlotSharding;
+import com.tim.delayschedule.server.executor.ScheduleTaskExecutor;
 import com.tim.delayschedule.server.storage.DelayTaskStorage;
 import com.tim.delayschedule.server.storage.JdbcDelayTaskStorage;
 import com.tim.delayschedule.server.timer.Timer;
@@ -80,6 +81,7 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
         this.delayTaskStorage.addTask(task);
 
         timer.addTask(new TimerTask(task.getScheduleTime(), () -> {
+            // 由于当前实例覆盖的slot可能会变化，所以执行前需要再次检测一下
             if (shouldHandle(task)) {
                 taskExecutor.Execute(task);
             }
