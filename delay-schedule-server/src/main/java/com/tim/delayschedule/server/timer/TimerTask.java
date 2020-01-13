@@ -31,7 +31,7 @@ public class TimerTask {
      * @param task 执行的task
      */
     public TimerTask(long scheduleTime, Runnable task) {
-        this.delay = delay;
+        this.delay = scheduleTime;
         this.task = task;
         this.next = null;
         this.pre = null;

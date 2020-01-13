@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 定时器
+ * @author xiaobing-notebook
  */
 public class Timer {
 

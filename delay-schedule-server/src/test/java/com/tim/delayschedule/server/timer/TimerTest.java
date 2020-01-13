@@ -1,20 +1,17 @@
-package com.tim.delayschedule.core.timer;
+package com.tim.delayschedule.server.timer;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 /**
  * @author xiaobing
- * @date 2020/1/9
+ * @date 2020/1/13
  */
 public class TimerTest {
 
@@ -30,7 +27,7 @@ public class TimerTest {
             taskCount.incrementAndGet();
 
             long start = System.nanoTime();
-            return new TimerTask(delay, new Runnable() {
+            return new TimerTask(System.currentTimeMillis() + delay, new Runnable() {
                 @Override
                 public void run() {
                     taskCount.decrementAndGet();
@@ -38,8 +35,8 @@ public class TimerTest {
                     try {
                         //允许的延迟任务误差20ms
                         Assert.assertTrue(delayTime > delay - 20 && delayTime < delay + 20);
-                        System.out.println("expected delay + " + delay + ", delayTime: " + delayTime);
                     } catch (Throwable ex) {
+                        System.out.println("expected delay + " + delay + ", delayTime: " + delayTime);
                         ex.printStackTrace();
                         assertExceptionList.add(ex);
                     }
