@@ -3,3 +3,6 @@
 
 #### delay-schedule架构图
 ![分布式延迟任务调度架构图.jpg](https://github.com/yangxb2010000/delay-schedule/blob/master/doc/分布式延迟任务调度架构图.jpg)
+
+#### zookeeper架构图
+![分布式延迟任务调度架构图.jpg](https://github.com/yangxb2010000/delay-schedule/blob/master/doc/zookeeper设计图.jpg)
