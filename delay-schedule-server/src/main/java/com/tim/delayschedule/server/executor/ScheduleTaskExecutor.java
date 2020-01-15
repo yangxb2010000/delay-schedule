@@ -10,6 +10,7 @@ import java.util.ServiceLoader;
 
 /**
  * 负责执行ScheduleTask
+ * @author xiaobing
  */
 public class ScheduleTaskExecutor {
     private static Logger logger = LoggerFactory.getLogger(ScheduleTaskExecutor.class);
@@ -27,9 +28,11 @@ public class ScheduleTaskExecutor {
             logger.warn("no taskConsumer for delayTask id: {}, type: {}. This delayTask will be ignored.", delayTask.getId(), delayTask.getType());
             return;
         }
+
+        taskConsumer.Execute(delayTask);
     }
 
-    private synchronized void init() {
+    private void init() {
         ServiceLoader<DelayTaskConsumer> consumers = ServiceLoader.load(DelayTaskConsumer.class);
 
         for (DelayTaskConsumer taskConsumer : consumers) {

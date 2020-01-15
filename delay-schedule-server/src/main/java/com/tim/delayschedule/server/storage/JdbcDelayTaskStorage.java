@@ -20,7 +20,17 @@ public class JdbcDelayTaskStorage implements DelayTaskStorage {
     }
 
     @Override
-    public List<DelayTask> loadUnExecutedTask(SlotRange slotRange) {
+    public void markTaskExecuted(List<String> taskIdList) {
+
+    }
+
+    @Override
+    public void markTaskExecuted(String taskId) {
+
+    }
+
+    @Override
+    public LoadUnExecutedTaskResult loadUnExecutedTask(SlotRange slotRange, long cursor, long endTime) {
         return null;
     }
 }

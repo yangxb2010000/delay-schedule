@@ -2,6 +2,7 @@ package com.tim.delayschedule.server.storage;
 
 import com.tim.delayschedule.core.model.DelayTask;
 import com.tim.delayschedule.core.sharding.SlotRange;
+import lombok.Data;
 
 import java.util.List;
 
@@ -24,10 +25,40 @@ public interface DelayTaskStorage {
     void addAllTask(List<DelayTask> delayTask);
 
     /**
-     * 根据指定SlotRange对应的还未执行的
+     * 标记Task已经执行完成
+     *
+     * @param taskIdList
+     */
+    void markTaskExecuted(List<String> taskIdList);
+
+    /**
+     * 标记Task已经执行完成
+     *
+     * @param taskId
+     */
+    void markTaskExecuted(String taskId);
+
+    /**
+     * 根据指定SlotRange对应的还未执行的DelayTask
      *
      * @param slotRange
+     * @param cursor    游标，从cursor往后的才加载
+     * @param endTime   截至时间，只加载endTime之前的数据
      * @return
      */
-    List<DelayTask> loadUnExecutedTask(SlotRange slotRange);
+    LoadUnExecutedTaskResult loadUnExecutedTask(SlotRange slotRange, long cursor, long endTime);
+
+    @Data
+    class LoadUnExecutedTaskResult {
+        /**
+         * 分批加载时的cursor
+         */
+        private long cursor;
+
+        /**
+         * taskList
+         */
+        private List<DelayTask> taskList;
+
+    }
 }
