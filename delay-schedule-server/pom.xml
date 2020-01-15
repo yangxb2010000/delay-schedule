@@ -16,5 +16,11 @@
             <groupId>com.tim</groupId>
             <artifactId>delay-schedule-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.14</version>
+        </dependency>
     </dependencies>
 </project>
