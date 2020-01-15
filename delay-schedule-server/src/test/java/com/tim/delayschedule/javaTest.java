@@ -6,8 +6,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 功能描述 : TODO
@@ -19,7 +17,7 @@ import java.util.List;
 public class javaTest {
 
     @Test
-    public void test() throws IOException, KeeperException, InterruptedException {
+    public void zookeeperClient() throws IOException, KeeperException, InterruptedException {
         // 创建一个与服务器的连接
         ZooKeeper zk = new ZooKeeper("176.122.169.95:2184",
                 3000, new Watcher() {
@@ -55,29 +53,6 @@ public class javaTest {
 
     }
 
-    @Test
-    public void zookeeperClient() throws IOException {
-        String hostPort = "176.122.169.95:2184";
-        String zpath = "/";
-        List<String> zooChildren = new ArrayList<String>();
-        ZooKeeper zk = new ZooKeeper(hostPort, 3000, new Watcher() {
-            // 监控所有被触发的事件
-            public void process(WatchedEvent event) {
-                System.out.println("已经触发了" + event.getType() + "事件！");
-            }
-        });
-
-        try {
-            zk.create("/testRootPath", "testRootData".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                    CreateMode.EPHEMERAL);
-
-            zk.setData("/testRootPath", "modifyChildDataOne".getBytes(), -1);
-        } catch (KeeperException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Test
     public void leaderElection() throws InterruptedException, IOException {
@@ -129,7 +104,7 @@ public class javaTest {
                 3000, null);
 
         String rootZnode = "/wanghui";
-        
+
         try {
             zk.create(rootZnode + "/server", "data".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
