@@ -14,7 +14,7 @@ import java.net.InetAddress;
  * @Email : 793147654@qq.com
  * @Date : 2020-01-14 16:24
  */
-public class javaTest {
+public class ZookeeperTest {
 
     @Test
     public void zookeeperClient() throws IOException, KeeperException, InterruptedException {
