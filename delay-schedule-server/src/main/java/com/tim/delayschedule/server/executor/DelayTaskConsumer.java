@@ -4,6 +4,7 @@ import com.tim.delayschedule.core.model.DelayTask;
 
 /**
  * 消费DelayTask
+ * @author xiaobing
  */
 public interface DelayTaskConsumer {
     /**
