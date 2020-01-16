@@ -1,7 +1,6 @@
 package com.tim.delayschedule.core.mapper;
 
 import com.tim.delayschedule.core.constant.TaskStatus;
-import com.tim.delayschedule.core.constant.TaskType;
 import com.tim.delayschedule.core.model.DelayTask;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -24,7 +23,7 @@ public class DelayTaskMapper implements RowMapper<DelayTask> {
 
         delayTask.setId(rs.getString("id"));
         delayTask.setSlotId(rs.getInt("slot_id"));
-        delayTask.setType(TaskType.fromValue(rs.getInt("type")));
+        delayTask.setType(rs.getString("type"));
         delayTask.setPayload(rs.getString("payload"));
         delayTask.setPublishTime(rs.getLong("publish_time"));
         delayTask.setScheduleTime(rs.getLong("schedule_time"));

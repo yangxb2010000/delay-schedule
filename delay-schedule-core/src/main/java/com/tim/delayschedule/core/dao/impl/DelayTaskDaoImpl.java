@@ -91,7 +91,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
                 "ttr, executed_count, status, create_time, update_time)" +
                 " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        int result = jdbcTemplate.update( SQL, new Object[]{delayTask.getId(), delayTask.getSlotId(), delayTask.getType().toValue(),
+        int result = jdbcTemplate.update( SQL, new Object[]{delayTask.getId(), delayTask.getSlotId(), delayTask.getType(),
                 delayTask.getPayload(), delayTask.getPublishTime(), delayTask.getScheduleTime(), delayTask.getExecuteTime(),
                 delayTask.getFinishedTime(), delayTask.getTtr(), delayTask.getExecutedCount(), delayTask.getStatus().toValue(),
                 delayTask.getCreateTime(), delayTask.getUpdateTime()} );
