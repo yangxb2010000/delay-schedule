@@ -151,4 +151,32 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
         return TaskDaoResult.UPDATE_SUCCESS;
     }
 
+    @Override
+    public TaskDaoResult updateStatusByIdBatch(List<String> taskIdList, List<TaskStatus> taskStatusList) {
+
+        if (taskIdList == null || taskStatusList == null || taskIdList.size() != taskStatusList.size()){
+            return TaskDaoResult.UPDATE_ERROR;
+        }
+
+        String SQL = "update delay_task set status = ? where id = ?";
+
+        jdbcTemplate.batchUpdate(SQL, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                String id = taskIdList.get(i);
+                TaskStatus taskStatus = taskStatusList.get(i);
+
+                ps.setObject(1, taskStatus.toValue());
+                ps.setObject(2, id);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return taskIdList.size();
+            }
+        });
+
+        return TaskDaoResult.UPDATE_SUCCESS;
+    }
+
 }

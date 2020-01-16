@@ -48,4 +48,11 @@ public interface DelayTaskDao {
      * @Return : com.tim.delayschedule.core.model.DelayTask
      */
     TaskDaoResult updateStatusById(String id, TaskStatus taskStatus);
+
+    /**
+     * 根据id批量修改DelayTask状态
+     * @Param : [id, taskStatus]
+     * @Return : com.tim.delayschedule.server.constant.TaskDaoResult
+     */
+    TaskDaoResult updateStatusByIdBatch(List<String> taskIdList, List<TaskStatus> taskStatusList);
 }

@@ -141,4 +141,21 @@ public class DelayTaskDaoImplTest {
         Assert.assertEquals(TaskDaoResult.UPDATE_ERROR, result);
 
     }
+
+    @Test
+    public void updateStatusByIdBatch() {
+        List<String> ids = new ArrayList<>();
+        List<TaskStatus> statuss = new ArrayList<>();
+
+        ids.add("cf9f4a82-1278-4eaf-be75-5dbb3fcb5d0a");
+        ids.add("84de4353-febd-442f-8be1-3e0ad80cbc17");
+
+        statuss.add(TaskStatus.DELETED);
+
+        statuss.add(TaskStatus.RESERVED);
+
+        TaskDaoResult result = delayTaskDao.updateStatusByIdBatch(ids, statuss);
+
+        Assert.assertEquals(TaskDaoResult.UPDATE_SUCCESS, result);
+    }
 }

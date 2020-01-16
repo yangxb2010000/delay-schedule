@@ -9,6 +9,7 @@ import com.tim.delayschedule.server.storage.dao.impl.DelayTaskDaoImpl;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,6 +57,12 @@ public class JdbcDelayTaskStorage implements DelayTaskStorage {
     @Override
     public void markTaskExecuted(List<String> taskIdList) {
 
+        List<TaskStatus> statusList = new ArrayList<>();
+        for (int i = 0; i < taskIdList.size(); i++){
+            statusList.add(TaskStatus.DELETED);
+        }
+
+        delayTaskDao.updateStatusByIdBatch(taskIdList,statusList);
     }
 
     @Override
