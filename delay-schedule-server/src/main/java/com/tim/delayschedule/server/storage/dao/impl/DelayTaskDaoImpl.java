@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 
 /**
- * 功能描述 : TODO
+ * 功能描述 : DelayTask持久化实现类
  *
  * @Author : wang hui
  * @Email : 793147654@qq.com

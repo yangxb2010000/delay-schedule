@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * 功能描述 : TODO
+ * 功能描述 : DelayTask持久化映射对象
  *
  * @Author : wang hui
  * @Email : 793147654@qq.com

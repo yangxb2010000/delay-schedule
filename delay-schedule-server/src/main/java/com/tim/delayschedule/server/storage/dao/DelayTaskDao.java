@@ -5,7 +5,7 @@ import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.model.DelayTask;
 
 /**
- * 功能描述 : TODO
+ * 功能描述 : DelayTask持久化接口
  *
  * @Author : wang hui
  * @Email : 793147654@qq.com
