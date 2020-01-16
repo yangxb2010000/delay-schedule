@@ -78,5 +78,23 @@ public class DelayTaskDaoImplTest {
 
     @Test
     public void updateStatusById() {
+        String id = "77396317-fd03-4928-baf2-5c6273982343";
+        DelayTaskDao delayTaskDao = new DelayTaskDaoImpl();
+        TaskDaoResult result;
+
+        result = delayTaskDao.updateStatusById(id,TaskStatus.READY);
+        Assert.assertEquals(TaskDaoResult.UPDATE_SUCCESS,result);
+
+
+        DelayTask delayTask = null;
+
+        delayTask = delayTaskDao.select(id);
+        Assert.assertEquals(TaskStatus.READY, delayTask.getStatus());
+
+        id = "925763fa-bbf2-45dd-b415-dfd5ac463701";
+        result = delayTaskDao.updateStatusById(id,TaskStatus.DELETED);
+
+        Assert.assertEquals(TaskDaoResult.UPDATE_ERROR, result);
+
     }
 }
