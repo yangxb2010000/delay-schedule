@@ -7,7 +7,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * 功能描述 : TODO
+ * 功能描述 : Bean管理工厂
  *
  * @Author : wang hui
  * @Email : 793147654@qq.com
