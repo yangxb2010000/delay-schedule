@@ -110,7 +110,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
             return TaskDaoResult.UPDATE_ERROR;
         }
 
-        String SQL = "update into delay_task set status = ? where id = ?";
+        String SQL = "update delay_task set status = ? where id = ?";
 
         int result = jdbcTemplate.update( SQL, new Object[]{taskStatus.toValue(), id} );
 
