@@ -1,12 +1,12 @@
 package com.tim.delayschedule.client.dto;
 
-import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.constant.TaskType;
 import lombok.Data;
 
 
 /**
  * 功能描述 : DelayTask数据传输类
+ *
  * @Author : wang hui
  * @Email : 793147654@qq.com
  * @Date : 2020-01-16 13:13

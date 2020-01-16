@@ -5,6 +5,7 @@ import com.tim.delayschedule.core.sharding.SlotRange;
 import com.tim.delayschedule.core.sharding.SlotSharding;
 import com.tim.delayschedule.core.sharding.ZookeeperSlotSharding;
 import com.tim.delayschedule.server.executor.ScheduleTaskExecutor;
+import com.tim.delayschedule.server.model.SimpleDelayTask;
 import com.tim.delayschedule.server.storage.DelayTaskStorage;
 import com.tim.delayschedule.server.storage.JdbcDelayTaskStorage;
 import com.tim.delayschedule.server.timer.Timer;
@@ -16,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author xiaobing
@@ -29,7 +28,9 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
 
     private static final int DEFAULT_TIMER_TICK = 1000;
     private static final int DEFAULT_TIMER_WHEEL_SIZE = 100;
-    // 默认slot的总数
+    /**
+     *  默认slot的总数
+     */
     private static final int DEFAULT_SLOT_COUNT = 16384;
 
     private Timer timer;
@@ -40,31 +41,12 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
     private volatile int slotChangeVersion = 0;
     private volatile SlotRange slotRange;
 
+    /**
+     * 当slot变化之后，负责从DB中加载DelayTask的线程池
+     */
     private ExecutorService loadFromDBThreadPool;
 
     public TimeWheelScheduleManagerImpl() {
-        this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
-                ScheduleTaskExecutor.Default,
-                new ZookeeperSlotSharding(),
-                new JdbcDelayTaskStorage());
-    }
-
-    public TimeWheelScheduleManagerImpl(ScheduleTaskExecutor taskExecutor,
-                                        SlotSharding slotSharding) {
-        this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
-                taskExecutor,
-                slotSharding,
-                new JdbcDelayTaskStorage());
-    }
-
-    public TimeWheelScheduleManagerImpl(SlotSharding slotSharding) {
-        this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
-                ScheduleTaskExecutor.Default,
-                slotSharding,
-                new JdbcDelayTaskStorage());
-    }
-
-    public TimeWheelScheduleManagerImpl(DelayTaskStorage delayTaskStorage) {
         this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
                 ScheduleTaskExecutor.Default,
                 new ZookeeperSlotSharding(),
@@ -99,21 +81,23 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
             throw new RuntimeException("task's id cannot be null or empty.");
         }
 
-        if (!shouldHandle(task)) {
+        SimpleDelayTask simpleDelayTask = toSimple(task);
+        if (!shouldHandle(simpleDelayTask)) {
             throw new RuntimeException("the schedule manager don't handle this task, taskId: " + task.getId());
         }
 
         //先进行持久化，如果持久化成功才放入内存的timer中，如果写入失败就直接返回失败
         this.delayTaskStorage.addTask(task);
 
-        pushTaskToTimer(task);
+        pushTaskToTimer(simpleDelayTask);
     }
 
-    private void pushTaskToTimer(DelayTask task) {
-        timer.addTask(new TimerTask(task.getScheduleTime(), () -> {
+    private void pushTaskToTimer(SimpleDelayTask simpleTask) {
+        timer.addTask(new TimerTask(simpleTask.getScheduleTime(), () -> {
             // 由于当前实例覆盖的slot可能会变化，所以执行前需要再次检测一下
-            if (shouldHandle(task)) {
-                taskExecutor.Execute(task);
+            if (shouldHandle(simpleTask)) {
+                DelayTask delayTask = this.delayTaskStorage.getTask(simpleTask.getId());
+                taskExecutor.Execute(delayTask);
             }
         }));
     }
@@ -175,7 +159,7 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
                         break;
                     }
 
-                    for (DelayTask delayTask : loadResult.getTaskList()) {
+                    for (SimpleDelayTask delayTask : loadResult.getTaskList()) {
                         pushTaskToTimer(delayTask);
                     }
 
@@ -191,11 +175,20 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
         }
     }
 
-    private boolean shouldHandle(DelayTask task) {
+    private boolean shouldHandle(SimpleDelayTask task) {
         if (task.getSlotId() < 0) {
             task.setSlotId(task.getId().hashCode() & (DEFAULT_SLOT_COUNT));
         }
 
         return this.slotSharding.shouldHandle(task.getSlotId());
+    }
+
+    private SimpleDelayTask toSimple(DelayTask delayTask) {
+        SimpleDelayTask sdt = new SimpleDelayTask();
+        sdt.setId(delayTask.getId());
+        sdt.setSlotId(delayTask.getSlotId());
+        sdt.setScheduleTime(delayTask.getScheduleTime());
+
+        return sdt;
     }
 }

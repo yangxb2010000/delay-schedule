@@ -21,6 +21,11 @@ public class JdbcDelayTaskStorage implements DelayTaskStorage {
     }
 
     @Override
+    public DelayTask getTask(String id) {
+        return null;
+    }
+
+    @Override
     public void markTaskExecuted(List<String> taskIdList) {
 
     }

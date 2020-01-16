@@ -13,6 +13,7 @@ public enum TaskType {
      */
     DELAY_TASK(0);
 
+
     private int value;
 
     TaskType(int value) {
