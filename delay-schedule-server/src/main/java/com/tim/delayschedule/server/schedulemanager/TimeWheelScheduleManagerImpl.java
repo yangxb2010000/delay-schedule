@@ -13,6 +13,7 @@ import com.tim.delayschedule.server.timer.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -46,11 +47,19 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
      */
     private ExecutorService loadFromDBThreadPool;
 
-    public TimeWheelScheduleManagerImpl() {
+    //TODO 不应该new
+//    public TimeWheelScheduleManagerImpl() {
+//        this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
+//                ScheduleTaskExecutor.Default,
+//                new ZookeeperSlotSharding(),
+//                new JdbcDelayTaskStorage());
+//    }
+
+        public TimeWheelScheduleManagerImpl(DataSource dataSource) {
         this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
                 ScheduleTaskExecutor.Default,
                 new ZookeeperSlotSharding(),
-                new JdbcDelayTaskStorage());
+                new JdbcDelayTaskStorage(dataSource));
     }
 
     public TimeWheelScheduleManagerImpl(Timer timer,

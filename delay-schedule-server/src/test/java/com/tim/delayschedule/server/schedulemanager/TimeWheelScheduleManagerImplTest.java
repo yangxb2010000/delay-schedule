@@ -2,9 +2,12 @@ package com.tim.delayschedule.server.schedulemanager;
 
 import com.tim.delayschedule.core.sharding.SlotSharding;
 import com.tim.delayschedule.server.storage.DelayTaskStorage;
+import com.tim.delayschedule.utils.DataSourceUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.sql.DataSource;
 
 import static org.mockito.Mockito.spy;
 
@@ -24,8 +27,8 @@ public class TimeWheelScheduleManagerImplTest {
     public void setSlotRange() {
         SlotSharding slotSharding = spy(SlotSharding.class);
         DelayTaskStorage delayTaskStorage = spy(DelayTaskStorage.class);
+        DataSource dataSource = DataSourceUtils.initDataSource();
 
-
-        TimeWheelScheduleManagerImpl scheduleManager = new TimeWheelScheduleManagerImpl();
+        TimeWheelScheduleManagerImpl scheduleManager = new TimeWheelScheduleManagerImpl(dataSource);
     }
 }

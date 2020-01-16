@@ -4,6 +4,8 @@ import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.model.DelayTask;
 
+import java.util.List;
+
 /**
  * 功能描述 : DelayTask持久化接口
  *
@@ -27,11 +29,18 @@ public interface DelayTaskDao {
     TaskDaoResult delete(String id);
 
     /**
-     * 创建DelayTask
+     * 插入DelayTask
      * @Param : [delayTask]
      * @Return : com.tim.delayschedule.core.model.DelayTask
      */
     TaskDaoResult insert(DelayTask delayTask);
+
+    /**
+     * 批量插入DelayTask
+     * @Param : [delayTask]
+     * @Return : com.tim.delayschedule.server.constant.TaskDaoResult
+     */
+    TaskDaoResult insertBatch(List<DelayTask> delayTask);
 
     /**
      * 根据id修改DelayTask状态
