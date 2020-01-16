@@ -1,6 +1,7 @@
 package com.tim.delayschedule.server.storage.dao.impl;
 
 import com.tim.delayschedule.core.constant.TaskType;
+import com.tim.delayschedule.server.bean.DelayScheduleBeanFactory;
 import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.server.storage.dao.DelayTaskDao;
@@ -13,13 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-@Ignore
+//@Ignore
 public class DelayTaskDaoImplTest {
+
+    private DelayTaskDao delayTaskDao = DelayScheduleBeanFactory.getDelayTaskDao();
 
     @Test
     public void select() {
         String id = "77396317-fd03-4928-baf2-5c6273982343";
-        DelayTaskDao delayTaskDao = new DelayTaskDaoImpl();
         DelayTask result;
 
         result = delayTaskDao.select(id);
@@ -33,7 +35,6 @@ public class DelayTaskDaoImplTest {
     @Test
     public void delete() {
         String id = "4d8f1a67-8fb6-4408-b7ce-8f273ef7286a";
-        DelayTaskDao delayTaskDao = new DelayTaskDaoImpl();
         TaskDaoResult result;
 
         //删除成功
@@ -47,7 +48,6 @@ public class DelayTaskDaoImplTest {
 
     @Test
     public void insert() {
-        DelayTaskDao delayTaskDao = new DelayTaskDaoImpl();
         DelayTask delayTask = new DelayTask();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
         String currentTime = format.format(new Date());
@@ -81,7 +81,6 @@ public class DelayTaskDaoImplTest {
     @Test
     public void updateStatusById() {
         String id = "77396317-fd03-4928-baf2-5c6273982343";
-        DelayTaskDao delayTaskDao = new DelayTaskDaoImpl();
         TaskDaoResult result;
 
         result = delayTaskDao.updateStatusById(id, TaskStatus.READY);
