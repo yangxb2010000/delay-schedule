@@ -48,6 +48,12 @@ public class DelayTask {
     private Long finishedTime;
 
     /**
+     * Job执行超时时间.单位：秒
+     */
+    private int ttr;
+
+
+    /**
      * 执行次数
      */
     private int executedCount;

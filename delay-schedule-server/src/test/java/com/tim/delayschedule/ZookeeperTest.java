@@ -1,7 +1,6 @@
 package com.tim.delayschedule;
 
 import org.apache.zookeeper.*;
-import org.apache.zookeeper.data.Stat;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -18,6 +17,7 @@ public class ZookeeperTest {
 
     @Test
     public void zookeeperClient() throws IOException, KeeperException, InterruptedException {
+
         // 创建一个与服务器的连接
         ZooKeeper zk = new ZooKeeper("176.122.169.95:2184",
                 3000, new Watcher() {
