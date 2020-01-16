@@ -126,8 +126,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
 
         dbConnectInfo.setUserName("root");
         dbConnectInfo.setPassword("afhjekhih322fjk");
-        dbConnectInfo.setHost("176.122.169.95");
-        dbConnectInfo.setPort("13306");
+        dbConnectInfo.setUrl("jdbc:mysql://176.122.169.95:13306/delay_schedule");
         dbConnectInfo.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         return dbConnectInfo;
@@ -143,7 +142,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
 
         dataSource.setUsername(dbConnectInfo.getUserName());
         dataSource.setPassword(dbConnectInfo.getPassword());
-        dataSource.setUrl(String.format("jdbc:mysql://%s:%s/delay_schedule", dbConnectInfo.getHost(), dbConnectInfo.getPort()));
+        dataSource.setUrl(dbConnectInfo.getUrl());
         dataSource.setDriverClassName(dbConnectInfo.getDriverClassName());
 
         //初始化连接数

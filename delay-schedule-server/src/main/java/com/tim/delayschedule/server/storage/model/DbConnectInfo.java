@@ -23,14 +23,9 @@ public class DbConnectInfo {
     private String password;
 
     /**
-     * 数据库地址
+     * 数据库url
      */
-    private String host;
-
-    /**
-     * 数据库端口
-     */
-    private String port;
+    private String url;
 
     /**
      * 数据库驱动
