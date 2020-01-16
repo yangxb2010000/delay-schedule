@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 /**
  * @author xiaobing
@@ -26,7 +25,6 @@ public class TimeWheelScheduleManagerImplTest {
         SlotSharding slotSharding = spy(SlotSharding.class);
         DelayTaskStorage delayTaskStorage = spy(DelayTaskStorage.class);
 
-        when(slotSharding.getHandledSlots()).thenReturn()
 
         TimeWheelScheduleManagerImpl scheduleManager = new TimeWheelScheduleManagerImpl();
     }

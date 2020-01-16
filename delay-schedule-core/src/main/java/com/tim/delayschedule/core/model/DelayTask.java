@@ -1,5 +1,7 @@
 package com.tim.delayschedule.core.model;
 
+import com.tim.delayschedule.core.constant.TaskStatus;
+import com.tim.delayschedule.core.constant.TaskType;
 import lombok.Data;
 
 /**
@@ -20,7 +22,7 @@ public class DelayTask {
     /**
      * task类型
      */
-    private String type;
+    private TaskType type = TaskType.DELAY_TASK;
     /**
      * 执行task需要的参数体
      */
@@ -47,7 +49,29 @@ public class DelayTask {
     private Long finishedTime;
 
     /**
+     * Job执行超时时间.单位：秒
+     */
+    private int ttr;
+
+
+    /**
      * 执行次数
      */
     private int executedCount;
+
+    /**
+     * task状态
+     */
+    private TaskStatus status = TaskStatus.DELAY;
+
+
+    /**
+     * 数据库记录创建时间,格式为2020-01-16 14:49:12  共19位
+     */
+    private String createTime;
+
+    /**
+     * 数据库记录修改时间
+     */
+    private String updateTime;
 }
