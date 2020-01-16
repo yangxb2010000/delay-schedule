@@ -7,31 +7,11 @@ package com.tim.delayschedule.core.constant;
  * @Email : 793147654@qq.com
  * @Date : 2020-01-14 13:15
  */
-public enum TaskType {
+public class TaskType {
     /**
      * 延迟队列
      */
-    DELAY_TASK(0);
+    public static final String DELAY_TASK = "delay_task";
 
-
-    private int value;
-
-    TaskType(int value) {
-        this.value = value;
-    }
-
-    public int toValue() {
-        return value;
-    }
-
-    static public TaskType fromValue(int value) {
-        switch (value) {
-            case 0:
-                return TaskType.DELAY_TASK;
-
-            default:
-                return TaskType.DELAY_TASK;
-        }
-    }
 
 }

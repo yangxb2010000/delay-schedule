@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 16/01/2020 20:37:01
+ Date: 16/01/2020 21:13:05
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `delay_task`;
 CREATE TABLE `delay_task` (
   `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `slot_id` int(11) NOT NULL,
-  `type` int(11) NOT NULL,
+  `type` varchar(255) NOT NULL,
   `payload` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `publish_time` bigint(20) NOT NULL,
   `schedule_time` bigint(20) NOT NULL,

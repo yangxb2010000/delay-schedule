@@ -1,5 +1,6 @@
 package com.tim.delayschedule.server.storage.dao.impl;
 
+import com.tim.delayschedule.core.constant.TaskType;
 import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.server.storage.dao.DelayTaskDao;
@@ -12,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-@Ignore
+//@Ignore
 public class DelayTaskDaoImplTest {
 
     @Test
@@ -31,7 +32,7 @@ public class DelayTaskDaoImplTest {
 
     @Test
     public void delete() {
-        String id = "f115beed-2063-4c1e-bc3a-bf1ec4dd9e71";
+        String id = "4d8f1a67-8fb6-4408-b7ce-8f273ef7286a";
         DelayTaskDao delayTaskDao = new DelayTaskDaoImpl();
         TaskDaoResult result;
 
@@ -63,7 +64,7 @@ public class DelayTaskDaoImplTest {
         delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
         delayTask.setUpdateTime(currentTime);
-        delayTask.setType("delay_task");
+        delayTask.setType(TaskType.DELAY_TASK);
 
 
         //插入成功数据

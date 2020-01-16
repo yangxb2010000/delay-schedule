@@ -1,6 +1,5 @@
 package com.tim.delayschedule.client.dto;
 
-import com.tim.delayschedule.core.constant.TaskType;
 import lombok.Data;
 
 
@@ -17,7 +16,7 @@ public class DelayTaskDTO {
     /**
      * task类型
      */
-    private TaskType type = TaskType.DELAY_TASK;
+    private String type;
 
     /**
      * 执行task需要的参数体
