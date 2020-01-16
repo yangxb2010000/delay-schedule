@@ -26,7 +26,7 @@ public class ZookeeperTest {
                 System.out.println("已经触发了" + event.getType() + "事件！");
             }
         });
-// 创建一个目录节点
+// 创建一个目录节点s
         zk.create("/testRootPath", "testRootData".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE,
                 CreateMode.PERSISTENT);
 

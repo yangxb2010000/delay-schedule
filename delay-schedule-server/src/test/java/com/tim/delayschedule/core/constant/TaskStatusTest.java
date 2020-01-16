@@ -14,5 +14,6 @@ public class TaskStatusTest {
 
         Assert.assertEquals(1,taskStatusEnum.toValue());
 
+        Assert.assertEquals(TaskStatus.fromvalue(2),TaskStatus.RESERVED);
     }
 }

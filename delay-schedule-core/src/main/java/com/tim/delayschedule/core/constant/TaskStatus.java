@@ -38,8 +38,8 @@ public enum TaskStatus {
         return value;
     }
 
-    static public TaskStatus fromFlag(int flag) {
-        switch (flag) {
+    static public TaskStatus fromvalue(int value) {
+        switch (value) {
             case 0:
                 return TaskStatus.DELAY;
 

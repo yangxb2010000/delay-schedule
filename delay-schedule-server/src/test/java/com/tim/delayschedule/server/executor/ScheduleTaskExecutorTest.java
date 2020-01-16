@@ -1,5 +1,6 @@
 package com.tim.delayschedule.server.executor;
 
+import com.tim.delayschedule.core.constant.TaskType;
 import com.tim.delayschedule.core.model.DelayTask;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,10 +14,10 @@ public class ScheduleTaskExecutorTest {
         ScheduleTaskExecutor taskExecutor = new ScheduleTaskExecutor();
 
         DelayTask delayTaskA = new DelayTask();
-        delayTaskA.setType("A");
+        delayTaskA.setType(TaskType.DELAY_TASK);
 
         DelayTask delayTaskB = new DelayTask();
-        delayTaskB.setType("B");
+        delayTaskB.setType(TaskType.DELAY_TASK);
 
         taskExecutor.Execute(delayTaskA);
         taskExecutor.Execute(delayTaskB);

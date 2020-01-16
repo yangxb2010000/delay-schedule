@@ -1,6 +1,7 @@
 package com.tim.delayschedule.core.model;
 
 import com.tim.delayschedule.core.constant.TaskStatus;
+import com.tim.delayschedule.core.constant.TaskType;
 import lombok.Data;
 
 /**
@@ -21,7 +22,7 @@ public class DelayTask {
     /**
      * task类型
      */
-    private String type;
+    private TaskType type = TaskType.DELAY_TASK;
     /**
      * 执行task需要的参数体
      */
