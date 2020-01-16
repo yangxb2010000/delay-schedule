@@ -2,6 +2,7 @@ package com.tim.delayschedule.server.storage;
 
 import com.tim.delayschedule.core.model.DelayTask;
 import com.tim.delayschedule.core.sharding.SlotRange;
+import com.tim.delayschedule.server.model.SimpleDelayTask;
 import lombok.Data;
 
 import java.util.List;
@@ -23,6 +24,13 @@ public interface DelayTaskStorage {
      * @param delayTask
      */
     void addAllTask(List<DelayTask> delayTask);
+
+    /**
+     * 获取DelayTask
+     *
+     * @param id
+     */
+    DelayTask getTask(String id);
 
     /**
      * 标记Task已经执行完成
@@ -58,7 +66,7 @@ public interface DelayTaskStorage {
         /**
          * taskList
          */
-        private List<DelayTask> taskList;
+        private List<SimpleDelayTask> taskList;
 
     }
 }

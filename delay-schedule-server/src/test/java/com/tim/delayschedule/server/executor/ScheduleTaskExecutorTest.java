@@ -13,10 +13,10 @@ public class ScheduleTaskExecutorTest {
         ScheduleTaskExecutor taskExecutor = new ScheduleTaskExecutor();
 
         DelayTask delayTaskA = new DelayTask();
-        delayTaskA.setType("A");
+        delayTaskA.setType("ScheduleTaskExecutorTest_A");
 
         DelayTask delayTaskB = new DelayTask();
-        delayTaskB.setType("B");
+        delayTaskB.setType("ScheduleTaskExecutorTest_B");
 
         taskExecutor.Execute(delayTaskA);
         taskExecutor.Execute(delayTaskB);
@@ -35,7 +35,7 @@ public class ScheduleTaskExecutorTest {
 
         @Override
         public String handledTaskType() {
-            return "A";
+            return "ScheduleTaskExecutorTest_A";
         }
     }
 
@@ -49,7 +49,7 @@ public class ScheduleTaskExecutorTest {
 
         @Override
         public String handledTaskType() {
-            return "B";
+            return "ScheduleTaskExecutorTest_B";
         }
     }
 }
