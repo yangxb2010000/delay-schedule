@@ -1,5 +1,6 @@
 package com.tim.delayschedule.core.model;
 
+import com.tim.delayschedule.core.constant.TaskStatus;
 import lombok.Data;
 
 /**
@@ -47,7 +48,18 @@ public class DelayTask {
     private Long finishedTime;
 
     /**
+     * Job执行超时时间.单位：秒
+     */
+    private int ttr;
+
+
+    /**
      * 执行次数
      */
     private int executedCount;
+
+    /**
+     * task状态
+     */
+    private TaskStatus status = TaskStatus.DELAY;
 }
