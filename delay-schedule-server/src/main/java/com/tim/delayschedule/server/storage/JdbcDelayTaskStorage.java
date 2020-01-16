@@ -9,6 +9,7 @@ import java.util.List;
  * jdbc的方式实现DelayTaskStorage
  */
 public class JdbcDelayTaskStorage implements DelayTaskStorage {
+
     @Override
     public void addTask(DelayTask delayTask) {
 
