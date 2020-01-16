@@ -1,6 +1,6 @@
-package com.tim.delayschedule.core.dao;
+package com.tim.delayschedule.server.storage.dao;
 
-import com.tim.delayschedule.core.constant.TaskDaoResult;
+import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.model.DelayTask;
 

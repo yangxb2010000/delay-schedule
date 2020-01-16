@@ -1,4 +1,4 @@
-package com.tim.delayschedule.core.dto;
+package com.tim.delayschedule.client.dto;
 
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.constant.TaskType;

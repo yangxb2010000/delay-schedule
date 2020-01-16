@@ -1,9 +1,9 @@
-package com.tim.delayschedule.core.dao.impl;
+package com.tim.delayschedule.server.storage.dao.impl;
 
-import com.tim.delayschedule.core.constant.TaskDaoResult;
+import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.constant.TaskType;
-import com.tim.delayschedule.core.dao.DelayTaskDao;
+import com.tim.delayschedule.server.storage.dao.DelayTaskDao;
 import com.tim.delayschedule.core.model.DelayTask;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class DelayTaskDaoImplTest {
 
     @Test
     public void delete() {
-        String id = "925763fa-bbf2-45dd-b415-dfd5ac463701";
+        String id = "f115beed-2063-4c1e-bc3a-bf1ec4dd9e71";
         DelayTaskDao delayTaskDao = new DelayTaskDaoImpl();
         TaskDaoResult result;
 

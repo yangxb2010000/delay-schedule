@@ -1,4 +1,4 @@
-package com.tim.delayschedule.core.mapper;
+package com.tim.delayschedule.server.storage.mapper;
 
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.constant.TaskType;

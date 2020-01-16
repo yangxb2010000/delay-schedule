@@ -1,4 +1,4 @@
-package com.tim.delayschedule.core.constant;
+package com.tim.delayschedule.server.constant;
 
 /**
  * 功能描述 : Task类型枚举类
