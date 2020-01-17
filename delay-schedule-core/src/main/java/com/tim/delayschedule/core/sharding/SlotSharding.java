@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,18 +21,18 @@ public interface SlotSharding {
     boolean shouldHandle(int slotId);
 
     /**
-     * 获取当前实例需要覆盖的Slot实例返回
+     * 获取当前实例需要覆盖的SlotId list
      *
      * @return
      */
-    SlotRange getHandledSlots();
+    List<Integer> getHandledSlots();
 
     /**
      * 获取所有Slot与Service Instance的对应关系
      *
      * @return
      */
-    Map<ServiceInstance, SlotRange> loadServiceInstanceList();
+    Map<ServiceInstance, List<Integer>> loadServiceInstanceList();
 
     @Data
     @ToString

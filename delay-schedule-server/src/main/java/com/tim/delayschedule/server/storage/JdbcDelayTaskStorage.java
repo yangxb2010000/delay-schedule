@@ -2,7 +2,6 @@ package com.tim.delayschedule.server.storage;
 
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.model.DelayTask;
-import com.tim.delayschedule.core.sharding.SlotRange;
 import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.server.storage.dao.DelayTaskDao;
 import com.tim.delayschedule.server.storage.dao.impl.DelayTaskDaoImpl;
@@ -72,7 +71,7 @@ public class JdbcDelayTaskStorage implements DelayTaskStorage {
     }
 
     @Override
-    public LoadUnExecutedTaskResult loadUnExecutedTask(SlotRange slotRange, long cursor, long endTime) {
+    public LoadUnExecutedTaskResult loadUnExecutedTask(List<Integer> slotIdList, long cursor, long endTime) {
         return null;
     }
 }
