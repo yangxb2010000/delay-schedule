@@ -2,6 +2,7 @@ package com.tim.delayschedule.server.storage.dao.impl;
 
 import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
+import com.tim.delayschedule.server.model.Entry;
 import com.tim.delayschedule.server.storage.dao.DelayTaskDao;
 import com.tim.delayschedule.server.storage.mapper.DelayTaskMapper;
 import com.tim.delayschedule.core.model.DelayTask;
@@ -152,9 +153,8 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     }
 
     @Override
-    public TaskDaoResult updateStatusByIdBatch(List<String> taskIdList, List<TaskStatus> taskStatusList) {
-
-        if (taskIdList == null || taskStatusList == null || taskIdList.size() != taskStatusList.size()){
+    public TaskDaoResult updateStatusByIdBatch(List<Entry<String, TaskStatus>> taskIdAndStatus) {
+        if (taskIdAndStatus == null || taskIdAndStatus.size() == 0){
             return TaskDaoResult.UPDATE_ERROR;
         }
 
@@ -163,16 +163,15 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
         jdbcTemplate.batchUpdate(SQL, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                String id = taskIdList.get(i);
-                TaskStatus taskStatus = taskStatusList.get(i);
+                Entry<String, TaskStatus> entry = taskIdAndStatus.get(i);
 
-                ps.setObject(1, taskStatus.toValue());
-                ps.setObject(2, id);
+                ps.setObject(1, entry.getValue().toValue());
+                ps.setObject(2, entry.getKey());
             }
 
             @Override
             public int getBatchSize() {
-                return taskIdList.size();
+                return taskIdAndStatus.size();
             }
         });
 

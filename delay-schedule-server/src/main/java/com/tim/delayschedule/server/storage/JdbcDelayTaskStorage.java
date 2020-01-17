@@ -3,13 +3,13 @@ package com.tim.delayschedule.server.storage;
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.model.DelayTask;
 import com.tim.delayschedule.server.constant.TaskDaoResult;
+import com.tim.delayschedule.server.model.Entry;
 import com.tim.delayschedule.server.storage.dao.DelayTaskDao;
 import com.tim.delayschedule.server.storage.dao.impl.DelayTaskDaoImpl;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * jdbc的方式实现DelayTaskStorage
@@ -56,12 +56,14 @@ public class JdbcDelayTaskStorage implements DelayTaskStorage {
     @Override
     public void markTaskExecuted(List<String> taskIdList) {
 
-        List<TaskStatus> statusList = new ArrayList<>();
-        for (int i = 0; i < taskIdList.size(); i++){
-            statusList.add(TaskStatus.DELETED);
+        List<Entry<String, TaskStatus>> taskIdAndStatus = new ArrayList<>() ;
+
+        for (String id : taskIdList) {
+
+            taskIdAndStatus.add(new Entry<>(id, TaskStatus.DELETED));
         }
 
-        delayTaskDao.updateStatusByIdBatch(taskIdList,statusList);
+        delayTaskDao.updateStatusByIdBatch(taskIdAndStatus);
     }
 
     @Override
