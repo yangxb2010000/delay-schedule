@@ -3,6 +3,7 @@ package com.tim.delayschedule.server.storage.dao;
 import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
 import com.tim.delayschedule.core.model.DelayTask;
+import com.tim.delayschedule.server.model.Entry;
 
 import java.util.List;
 
@@ -54,5 +55,5 @@ public interface DelayTaskDao {
      * @Param : [id, taskStatus]
      * @Return : com.tim.delayschedule.server.constant.TaskDaoResult
      */
-    TaskDaoResult updateStatusByIdBatch(List<String> taskIdList, List<TaskStatus> taskStatusList);
+    TaskDaoResult updateStatusByIdBatch(List<Entry<String, TaskStatus>> taskIdAndStatus);
 }

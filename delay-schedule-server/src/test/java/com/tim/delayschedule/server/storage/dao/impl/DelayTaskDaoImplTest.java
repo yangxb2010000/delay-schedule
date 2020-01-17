@@ -3,6 +3,7 @@ package com.tim.delayschedule.server.storage.dao.impl;
 import com.tim.delayschedule.core.constant.TaskType;
 import com.tim.delayschedule.server.constant.TaskDaoResult;
 import com.tim.delayschedule.core.constant.TaskStatus;
+import com.tim.delayschedule.server.model.Entry;
 import com.tim.delayschedule.server.storage.dao.DelayTaskDao;
 import com.tim.delayschedule.core.model.DelayTask;
 import com.tim.delayschedule.utils.DataSourceUtils;
@@ -144,17 +145,14 @@ public class DelayTaskDaoImplTest {
 
     @Test
     public void updateStatusByIdBatch() {
-        List<String> ids = new ArrayList<>();
-        List<TaskStatus> statuss = new ArrayList<>();
+        String id = "cf9f4a82-1278-4eaf-be75-5dbb3fcb5d0a";
+        String id2 = "84de4353-febd-442f-8be1-3e0ad80cbc17";
 
-        ids.add("cf9f4a82-1278-4eaf-be75-5dbb3fcb5d0a");
-        ids.add("84de4353-febd-442f-8be1-3e0ad80cbc17");
+        List<Entry<String, TaskStatus>> taskIdAndStatus = new ArrayList<>();
+        taskIdAndStatus.add(new Entry<>(id, TaskStatus.READY));
+        taskIdAndStatus.add(new Entry<>(id2, TaskStatus.DELETED));
 
-        statuss.add(TaskStatus.DELETED);
-
-        statuss.add(TaskStatus.RESERVED);
-
-        TaskDaoResult result = delayTaskDao.updateStatusByIdBatch(ids, statuss);
+        TaskDaoResult result = delayTaskDao.updateStatusByIdBatch(taskIdAndStatus);
 
         Assert.assertEquals(TaskDaoResult.UPDATE_SUCCESS, result);
     }
