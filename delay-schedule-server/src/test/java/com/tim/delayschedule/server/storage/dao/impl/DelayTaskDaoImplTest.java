@@ -148,12 +148,23 @@ public class DelayTaskDaoImplTest {
         String id = "cf9f4a82-1278-4eaf-be75-5dbb3fcb5d0a";
         String id2 = "84de4353-febd-442f-8be1-3e0ad80cbc17";
 
+        TaskStatus status = TaskStatus.DELETED;
+        TaskStatus status2 = TaskStatus.RESERVED;
+
         List<Entry<String, TaskStatus>> taskIdAndStatus = new ArrayList<>();
-        taskIdAndStatus.add(new Entry<>(id, TaskStatus.READY));
-        taskIdAndStatus.add(new Entry<>(id2, TaskStatus.DELETED));
+        taskIdAndStatus.add(new Entry<>(id, status));
+        taskIdAndStatus.add(new Entry<>(id2, status2));
 
         TaskDaoResult result = delayTaskDao.updateStatusByIdBatch(taskIdAndStatus);
 
         Assert.assertEquals(TaskDaoResult.UPDATE_SUCCESS, result);
+
+        DelayTask delayTask = delayTaskDao.select(id);
+        Assert.assertEquals(status, delayTask.getStatus());
+
+        delayTask = delayTaskDao.select(id2);
+        Assert.assertEquals(status2, delayTask.getStatus());
+
+
     }
 }
