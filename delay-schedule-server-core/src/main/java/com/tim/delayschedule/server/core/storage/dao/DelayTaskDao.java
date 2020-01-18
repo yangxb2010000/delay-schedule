@@ -23,6 +23,13 @@ public interface DelayTaskDao {
     ScheduleEntry select(String id);
 
     /**
+     * 根据slotIds和scheduleTime分页查询
+     * @Param : [slotIds, scheduleTime, pageSize, cursor]
+     * @Return : java.util.List<com.tim.delayschedule.core.model.DelayTask>
+     */
+    List<ScheduleEntry> selectBySlotIdWithScheduleTime(List<Integer> slotIds, long scheduleTime, int pageSize, int cursor);
+
+    /**
      * 根据id删除DelayTask
      * @Param : [id] DelayTask 唯一id值
      * @Return : com.tim.delayschedule.server.model.DelayTask

@@ -7,6 +7,23 @@
 #### zookeeper架构图
 ![分布式延迟任务调度架构图.jpg](https://github.com/yangxb2010000/delay-schedule/blob/master/doc/zookeeper设计图.jpg)
 
+
+## 项目介绍
+#### delay-schedule-client
+delay-schedule客户端使用的SDK，即调用方引用该SDK。
+
+#### delay-schedule-server-core
+delay-schedule服务端实现的核心逻辑的类都在改项目中
+
+#### delay-schedule-server-spring-boot-starter
+基于delay-schedule-server-core适配springboot，对delay-schedule-server-core中得类做装配注入spring容器中
+
+#### delay-schedule-server-web
+启动项目，根据需要引入需要的starter，如rabbitmq-spring-boot-starter来实现相应的功能
+
+#### delay-schedule-server-rabbitmq-spring-boot-starter
+适配rabbitmq的延时任务队列逻辑
+
 ## TODO：
 #### 一期目标： 基于mysql、zookeeper实现基本功能
 1. client-proxy对外提供http接口支持传入延时消息功能

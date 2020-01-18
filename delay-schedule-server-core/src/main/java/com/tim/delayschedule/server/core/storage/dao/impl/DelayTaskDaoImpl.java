@@ -55,6 +55,30 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     }
 
     @Override
+    public List<ScheduleEntry> selectBySlotIdWithScheduleTime(List<Integer> slotIds, long scheduleTime, int pageSize, int cursor) {
+
+        List<ScheduleEntry> delayTasks = null;
+
+        if (slotIds == null || slotIds.size() == 0){
+            return delayTasks;
+        }
+        StringBuilder SQL = new StringBuilder("select * from delay_task where slot_id in (");
+
+        for (int i = 0; i < slotIds.size(); i++){
+            SQL.append(slotIds.get(i)+",");
+        }
+
+        SQL.replace(SQL.length() - 1, SQL.length(), ") ");
+
+        SQL.append("and schedule_time <= ? limit ? offset ?");
+
+        delayTasks = jdbcTemplate.query(SQL.toString(), new Object[]{scheduleTime, pageSize, cursor}, new DelayTaskMapper());
+
+        return delayTasks;
+    }
+
+
+    @Override
     public TaskDaoResult delete(String id) {
 
         if (id == null){
