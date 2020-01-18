@@ -35,6 +35,63 @@ public class DelayTaskDaoImplTest {
     }
 
     @Test
+    public void selectBySlotIdWithScheduleTime(){
+        List<DelayTask> result = null;
+
+        List<Integer> slotIds = new ArrayList<>();
+        long schedultTime = 9999999999999L;
+
+        int pageSize = 3;
+        int cursor = 0;
+
+        slotIds.add(1);
+        slotIds.add(2);
+
+        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds,schedultTime, pageSize, cursor);
+
+        System.out.println(result);
+
+        Assert.assertEquals(3,result.size());
+
+        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds,schedultTime, pageSize, cursor + pageSize);
+
+        System.out.println(result);
+
+        Assert.assertEquals(3,result.size());
+
+        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds,schedultTime, pageSize, cursor + 2*pageSize);
+
+        System.out.println(result);
+
+        Assert.assertEquals(3,result.size());
+
+        DelayTask delayTask = new DelayTask();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
+        String currentTime = format.format(new Date());
+
+        delayTask.setId(UUID.randomUUID().toString());
+        delayTask.setSlotId(1);
+        delayTask.setStatus(TaskStatus.DELAY);
+        delayTask.setExecutedCount(2);
+        delayTask.setTtr(3);
+        delayTask.setPublishTime(System.currentTimeMillis());
+        delayTask.setScheduleTime(System.currentTimeMillis());
+        delayTask.setCreateTime(currentTime);
+        delayTask.setPayload("test data");
+        delayTask.setUpdateTime(currentTime);
+        delayTask.setType(TaskType.DELAY_TASK);
+
+        //插入成功数据
+        delayTaskDao.insert(delayTask);
+
+        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds,schedultTime, pageSize, cursor + 3*pageSize);
+
+        System.out.println(result);
+
+        Assert.assertEquals(2,result.size());
+    }
+
+    @Test
     public void delete() {
         String id = "4d8f1a67-8fb6-4408-b7ce-8f273ef7286a";
         TaskDaoResult result;
@@ -165,6 +222,6 @@ public class DelayTaskDaoImplTest {
         delayTask = delayTaskDao.select(id2);
         Assert.assertEquals(status2, delayTask.getStatus());
 
-
     }
+
 }

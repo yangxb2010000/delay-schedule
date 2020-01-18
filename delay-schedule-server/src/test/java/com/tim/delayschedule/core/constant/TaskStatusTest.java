@@ -16,4 +16,5 @@ public class TaskStatusTest {
 
         Assert.assertEquals(TaskStatus.fromvalue(2),TaskStatus.RESERVED);
     }
+
 }
