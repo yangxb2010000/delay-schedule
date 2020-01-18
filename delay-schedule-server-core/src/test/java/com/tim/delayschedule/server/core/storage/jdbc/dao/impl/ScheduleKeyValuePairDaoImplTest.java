@@ -45,7 +45,7 @@ public class ScheduleKeyValuePairDaoImplTest {
 
         //删除失败
         result = delayTaskDao.delete(id);
-        Assert.assertEquals(TaskDaoResult.DELETE_ERROR, result);
+        Assert.assertEquals(TaskDaoResult.DELETE_FAIL, result);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ScheduleKeyValuePairDaoImplTest {
 
         scheduleEntry.setId(UUID.randomUUID().toString());
         scheduleEntry.setSlotId(1);
-        scheduleEntry.setStatus(TaskStatus.DELAY);
+        scheduleEntry.setStatus(TaskStatus.NEW);
         scheduleEntry.setExecutedCount(2);
         scheduleEntry.setTtr(3);
         scheduleEntry.setPublishTime(System.currentTimeMillis());
@@ -77,7 +77,7 @@ public class ScheduleKeyValuePairDaoImplTest {
         //插入无效数据
         result = delayTaskDao.insert(null);
 
-        Assert.assertEquals(TaskDaoResult.INSERT_ERROR, result);
+        Assert.assertEquals(TaskDaoResult.INSERT_FAIL, result);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class ScheduleKeyValuePairDaoImplTest {
 
         scheduleEntry.setId(UUID.randomUUID().toString());
         scheduleEntry.setSlotId(1);
-        scheduleEntry.setStatus(TaskStatus.DELAY);
+        scheduleEntry.setStatus(TaskStatus.NEW);
         scheduleEntry.setExecutedCount(2);
         scheduleEntry.setTtr(3);
         scheduleEntry.setPublishTime(System.currentTimeMillis());
@@ -106,7 +106,7 @@ public class ScheduleKeyValuePairDaoImplTest {
 
         scheduleEntry2.setId(UUID.randomUUID().toString());
         scheduleEntry2.setSlotId(1);
-        scheduleEntry2.setStatus(TaskStatus.DELAY);
+        scheduleEntry2.setStatus(TaskStatus.NEW);
         scheduleEntry2.setExecutedCount(2);
         scheduleEntry2.setTtr(3);
         scheduleEntry2.setPublishTime(System.currentTimeMillis());
@@ -127,19 +127,19 @@ public class ScheduleKeyValuePairDaoImplTest {
         String id = "77396317-fd03-4928-baf2-5c6273982343";
         TaskDaoResult result;
 
-        result = delayTaskDao.updateStatusById(id, TaskStatus.READY);
+        result = delayTaskDao.updateStatusById(id, TaskStatus.NEW);
         Assert.assertEquals(TaskDaoResult.UPDATE_SUCCESS, result);
 
 
         ScheduleEntry scheduleEntry = null;
 
         scheduleEntry = delayTaskDao.select(id);
-        Assert.assertEquals(TaskStatus.READY, scheduleEntry.getStatus());
+        Assert.assertEquals(TaskStatus.NEW, scheduleEntry.getStatus());
 
         id = "925763fa-bbf2-45dd-b415-dfd5ac463701";
         result = delayTaskDao.updateStatusById(id, TaskStatus.DELETED);
 
-        Assert.assertEquals(TaskDaoResult.UPDATE_ERROR, result);
+        Assert.assertEquals(TaskDaoResult.UPDATE_FAIL, result);
 
     }
 
@@ -149,7 +149,7 @@ public class ScheduleKeyValuePairDaoImplTest {
         String id2 = "84de4353-febd-442f-8be1-3e0ad80cbc17";
 
         TaskStatus status = TaskStatus.DELETED;
-        TaskStatus status2 = TaskStatus.RESERVED;
+        TaskStatus status2 = TaskStatus.FINISH;
 
         List<KeyValuePair<String, TaskStatus>> taskIdAndStatus = new ArrayList<>();
         taskIdAndStatus.add(new KeyValuePair<>(id, status));

@@ -9,12 +9,12 @@ public class TaskStatusTest {
     @Test
     public void assertValue(){
 
-        TaskStatus taskStatusEnum = TaskStatus.READY;
-        Assert.assertEquals(TaskStatus.READY, taskStatusEnum);
+        TaskStatus taskStatusEnum = TaskStatus.NEW;
+        Assert.assertEquals(TaskStatus.NEW, taskStatusEnum);
 
         Assert.assertEquals(1,taskStatusEnum.toValue());
 
-        Assert.assertEquals(TaskStatus.fromvalue(2),TaskStatus.RESERVED);
+        Assert.assertEquals(TaskStatus.fromvalue(2),TaskStatus.DELETED);
     }
 
 }

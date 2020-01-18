@@ -61,7 +61,7 @@ public class ScheduleEntry {
     /**
      * task状态
      */
-    private TaskStatus status = TaskStatus.DELAY;
+    private TaskStatus status = TaskStatus.NEW;
 
 
     /**

@@ -82,14 +82,14 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     public TaskDaoResult delete(String id) {
 
         if (id == null){
-            return TaskDaoResult.DELETE_ERROR;
+            return TaskDaoResult.DELETE_FAIL;
         }
 
         String SQL = "delete from delay_task where id = ?";
         int result = jdbcTemplate.update( SQL, new Object[]{id} );
 
         if (result == 0){
-            return TaskDaoResult.DELETE_ERROR;
+            return TaskDaoResult.DELETE_FAIL;
         }
 
         return TaskDaoResult.DELETE_SUCCESS;
@@ -99,7 +99,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     public TaskDaoResult insert(ScheduleEntry scheduleEntry) {
 
         if (scheduleEntry == null){
-            return TaskDaoResult.INSERT_ERROR;
+            return TaskDaoResult.INSERT_FAIL;
         }
 
         String SQL = "insert into delay_task (id, slot_id, type, payload, publish_time, schedule_time, execute_time, finished_time, " +
@@ -112,7 +112,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
                 scheduleEntry.getCreateTime(), scheduleEntry.getUpdateTime()} );
 
         if (result == 0){
-            return TaskDaoResult.INSERT_ERROR;
+            return TaskDaoResult.INSERT_FAIL;
         }
 
         return TaskDaoResult.INSERT_SUCCESS;
@@ -122,7 +122,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     public TaskDaoResult insertBatch(List<ScheduleEntry> scheduleEntries) {
 
         if (scheduleEntries == null){
-            return TaskDaoResult.INSERT_ERROR;
+            return TaskDaoResult.INSERT_FAIL;
         }
 
         String SQL = "insert into delay_task (id, slot_id, type, payload, publish_time, schedule_time, execute_time, finished_time, " +
@@ -162,7 +162,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     public TaskDaoResult updateStatusById(String id, TaskStatus taskStatus) {
 
         if (id == null || taskStatus == null){
-            return TaskDaoResult.UPDATE_ERROR;
+            return TaskDaoResult.UPDATE_FAIL;
         }
 
         String SQL = "update delay_task set status = ? where id = ?";
@@ -170,7 +170,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
         int result = jdbcTemplate.update( SQL, new Object[]{taskStatus.toValue(), id} );
 
         if (result == 0){
-            return TaskDaoResult.UPDATE_ERROR;
+            return TaskDaoResult.UPDATE_FAIL;
         }
 
         return TaskDaoResult.UPDATE_SUCCESS;
@@ -179,7 +179,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     @Override
     public TaskDaoResult updateStatusByIdBatch(List<KeyValuePair<String, TaskStatus>> taskIdAndStatus) {
         if (taskIdAndStatus == null || taskIdAndStatus.size() == 0){
-            return TaskDaoResult.UPDATE_ERROR;
+            return TaskDaoResult.UPDATE_FAIL;
         }
 
         String SQL = "update delay_task set status = ? where id = ?";

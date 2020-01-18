@@ -9,24 +9,19 @@ package com.tim.delayschedule.server.core.constant;
  */
 public enum TaskStatus {
     /**
-     * 不可执行状态，等待时钟周期
+     * 新任务，不可执行状态，等待时钟周期
      */
-    DELAY(0),
+    NEW(0),
 
     /**
-     * 可执行状态，等待消费
+     * 完成状态
      */
-    READY(1),
+    FINISH(1),
 
     /**
-     * 已被消费者读取，但还未得到消费者的响应
+     * 删除
      */
-    RESERVED(2),
-
-    /**
-     * 已被消费完成或者已被删除
-     */
-    DELETED(3);
+    DELETED(2);
 
     private int value;
 
@@ -41,19 +36,16 @@ public enum TaskStatus {
     static public TaskStatus fromvalue(int value) {
         switch (value) {
             case 0:
-                return TaskStatus.DELAY;
+                return TaskStatus.NEW;
 
             case 1:
-                return TaskStatus.READY;
+                return TaskStatus.FINISH;
 
             case 2:
-                return TaskStatus.RESERVED;
-
-            case 3:
                 return TaskStatus.DELETED;
 
             default:
-                return TaskStatus.DELAY;
+                return TaskStatus.NEW;
         }
     }
 
