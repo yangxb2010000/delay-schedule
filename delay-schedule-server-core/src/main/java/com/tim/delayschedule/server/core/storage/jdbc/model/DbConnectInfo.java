@@ -1,4 +1,4 @@
-package com.tim.delayschedule.server.core.storage.model;
+package com.tim.delayschedule.server.core.storage.jdbc.model;
 
 import lombok.Data;
 

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface SlotSharding {
     /**
-     * 查看当前实例是否覆盖制定slotId
+     * 查看当前实例是否覆盖指定slotId
      *
      * @param slotId slotId
      * @return
@@ -21,7 +21,7 @@ public interface SlotSharding {
     boolean shouldHandle(int slotId);
 
     /**
-     * 获取当前实例需要覆盖的SlotId list
+     * 获取当前实例分配的SlotId list
      *
      * @return
      */

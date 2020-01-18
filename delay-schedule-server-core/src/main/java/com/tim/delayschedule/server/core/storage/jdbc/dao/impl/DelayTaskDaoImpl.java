@@ -1,11 +1,11 @@
-package com.tim.delayschedule.server.core.storage.dao.impl;
+package com.tim.delayschedule.server.core.storage.jdbc.dao.impl;
 
 import com.tim.delayschedule.server.core.constant.TaskDaoResult;
 import com.tim.delayschedule.server.core.constant.TaskStatus;
 import com.tim.delayschedule.server.core.model.KeyValuePair;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
-import com.tim.delayschedule.server.core.storage.dao.DelayTaskDao;
-import com.tim.delayschedule.server.core.storage.mapper.DelayTaskMapper;
+import com.tim.delayschedule.server.core.storage.jdbc.dao.DelayTaskDao;
+import com.tim.delayschedule.server.core.storage.jdbc.mapper.DelayTaskMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;

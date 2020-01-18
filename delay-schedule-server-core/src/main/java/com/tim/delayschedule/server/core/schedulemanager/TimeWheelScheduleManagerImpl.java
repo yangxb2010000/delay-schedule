@@ -1,7 +1,7 @@
 package com.tim.delayschedule.server.core.schedulemanager;
 
 import com.tim.delayschedule.server.core.storage.DelayTaskStorage;
-import com.tim.delayschedule.server.core.storage.JdbcDelayTaskStorage;
+import com.tim.delayschedule.server.core.storage.jdbc.JdbcDelayTaskStorage;
 import com.tim.delayschedule.server.core.schedulemanager.timer.Timer;
 import com.tim.delayschedule.server.core.schedulemanager.timer.TimerTask;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
@@ -108,6 +108,8 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
             if (shouldHandle(simpleTask)) {
                 ScheduleEntry scheduleEntry = this.delayTaskStorage.getTask(simpleTask.getId());
                 taskExecutor.Execute(scheduleEntry);
+
+                this.delayTaskStorage.markTaskExecuted(simpleTask.getId());
             }
         }));
     }

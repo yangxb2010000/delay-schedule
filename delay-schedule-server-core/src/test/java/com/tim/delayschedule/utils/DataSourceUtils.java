@@ -1,6 +1,6 @@
 package com.tim.delayschedule.utils;
 
-import com.tim.delayschedule.server.core.storage.model.DbConnectInfo;
+import com.tim.delayschedule.server.core.storage.jdbc.model.DbConnectInfo;
 import org.apache.commons.dbcp.BasicDataSource;
 
 /**

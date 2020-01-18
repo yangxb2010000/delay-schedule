@@ -1,4 +1,4 @@
-package com.tim.delayschedule.server.core.storage.dao;
+package com.tim.delayschedule.server.core.storage.jdbc.dao;
 
 import com.tim.delayschedule.server.core.constant.TaskDaoResult;
 import com.tim.delayschedule.server.core.constant.TaskStatus;

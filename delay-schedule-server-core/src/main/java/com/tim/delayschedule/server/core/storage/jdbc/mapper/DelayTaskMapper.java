@@ -1,4 +1,4 @@
-package com.tim.delayschedule.server.core.storage.mapper;
+package com.tim.delayschedule.server.core.storage.jdbc.mapper;
 
 import com.tim.delayschedule.server.core.constant.TaskStatus;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
