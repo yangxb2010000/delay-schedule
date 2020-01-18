@@ -1,5 +1,6 @@
 package com.tim.delayschedule.core.sharding;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,12 +13,12 @@ public class ZookeeperSlotSharding implements SlotSharding {
     }
 
     @Override
-    public SlotRange getHandledSlots() {
+    public List<Integer> getHandledSlots() {
         return null;
     }
 
     @Override
-    public Map<ServiceInstance, SlotRange> loadServiceInstanceList() {
+    public Map<ServiceInstance, List<Integer>> loadServiceInstanceList() {
         return null;
     }
 }

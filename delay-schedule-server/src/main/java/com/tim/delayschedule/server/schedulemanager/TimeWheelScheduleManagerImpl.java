@@ -1,7 +1,6 @@
 package com.tim.delayschedule.server.schedulemanager;
 
 import com.tim.delayschedule.core.model.DelayTask;
-import com.tim.delayschedule.core.sharding.SlotRange;
 import com.tim.delayschedule.core.sharding.SlotSharding;
 import com.tim.delayschedule.core.sharding.ZookeeperSlotSharding;
 import com.tim.delayschedule.server.executor.ScheduleTaskExecutor;
@@ -15,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -30,7 +31,7 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
     private static final int DEFAULT_TIMER_TICK = 1000;
     private static final int DEFAULT_TIMER_WHEEL_SIZE = 100;
     /**
-     *  默认slot的总数
+     * 默认slot的总数
      */
     private static final int DEFAULT_SLOT_COUNT = 16384;
 
@@ -40,7 +41,7 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
     private DelayTaskStorage delayTaskStorage;
 
     private volatile int slotChangeVersion = 0;
-    private volatile SlotRange slotRange;
+    private volatile Set<Integer> slotSet;
 
     /**
      * 当slot变化之后，负责从DB中加载DelayTask的线程池
@@ -55,7 +56,7 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
 //                new JdbcDelayTaskStorage());
 //    }
 
-        public TimeWheelScheduleManagerImpl(DataSource dataSource) {
+    public TimeWheelScheduleManagerImpl(DataSource dataSource) {
         this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
                 ScheduleTaskExecutor.Default,
                 new ZookeeperSlotSharding(),
@@ -114,71 +115,61 @@ public class TimeWheelScheduleManagerImpl implements ScheduleManager {
     /**
      * 重新设置SlotRange
      *
-     * @param newSlotRange
+     * @param newSlotIdList
      */
-    public synchronized void setSlotRange(SlotRange newSlotRange) {
-        List<SlotRange> loadMoreSlotRangeList = new ArrayList<>();
-        if (this.slotRange == null
-                || newSlotRange.getMinSlotId() > this.slotRange.getMaxSlotId()
-                || newSlotRange.getMaxSlotId() < this.slotRange.getMinSlotId()) {
-            //此时newSlotRange与旧的SlotRange完全没有重叠
-            loadMoreSlotRangeList.add(newSlotRange);
-        } else {
-            //此时是有重叠的场景
-            if (newSlotRange.getMinSlotId() < this.slotRange.getMinSlotId()) {
-                loadMoreSlotRangeList.add(new SlotRange(newSlotRange.getMinSlotId(), this.slotRange.getMinSlotId()));
+    public synchronized void changeHandledSlot(List<Integer> newSlotIdList) {
+        Set<Integer> newSlotSet = new HashSet<>();
+        List<Integer> loadMoreSlotList = new ArrayList<>();
+
+        for (Integer slotId : newSlotIdList) {
+            if (!newSlotSet.contains(slotId)) {
+                newSlotSet.add(slotId);
             }
 
-            if (newSlotRange.getMaxSlotId() > this.slotRange.getMaxSlotId()) {
-                loadMoreSlotRangeList.add(new SlotRange(this.slotRange.getMaxSlotId(), newSlotRange.getMinSlotId()));
+            if (!this.slotSet.contains(slotId)) {
+                loadMoreSlotList.add(slotId);
             }
         }
 
-        if (loadMoreSlotRangeList.size() == 0) {
+        this.slotSet = newSlotSet;
+
+        if (loadMoreSlotList.size() == 0) {
             //说明旧的SlotRange完全覆盖新的SlotRange，无须从DB中加载
-            this.slotRange = newSlotRange;
             return;
         }
 
-        startLoadDB(loadMoreSlotRangeList, this.slotChangeVersion++);
+        startLoadDB(loadMoreSlotList, this.slotChangeVersion++);
     }
 
-    private void startLoadDB(List<SlotRange> slotRanges, final int slotVersion) {
+    private void startLoadDB(List<Integer> slotIdList, final int slotVersion) {
         loadFromDBThreadPool.submit(() -> {
-            loadFromDB(slotRanges, slotVersion);
+            loadFromDB(slotIdList, slotVersion);
         });
     }
 
-    private void loadFromDB(List<SlotRange> slotRanges, int slotVersion) {
+    private void loadFromDB(List<Integer> slotIdList, int slotVersion) {
         // 往后推迟一秒，尽可能减少服务器时间不同步导致的数据丢失
         long endTime = System.currentTimeMillis() + 1000;
-        for (SlotRange slotRange : slotRanges) {
-            //如果在从DB中加载DelayTask的时候SlotRange又重新变化了，就退出当前线程
-            if (this.slotChangeVersion != slotVersion) {
-                logger.debug("found new slotChangeVersion, and current loadingFromDB operation will exit.");
-                break;
-            }
+        long cursor = 0;
+        //如果在从DB中加载DelayTask的时候SlotRange又重新变化了，就退出当前线程
+        while (this.slotChangeVersion == slotVersion) {
+            try {
+                DelayTaskStorage.LoadUnExecutedTaskResult loadResult = this.delayTaskStorage.loadUnExecutedTask(slotIdList, cursor, endTime);
+                // 加载完毕就推出当前循环
+                if (loadResult == null || loadResult.getTaskList() == null || loadResult.getTaskList().size() == 0) {
+                    break;
+                }
 
-            long cursor = 0;
-            while (this.slotChangeVersion == slotVersion) {
+                for (SimpleDelayTask delayTask : loadResult.getTaskList()) {
+                    pushTaskToTimer(delayTask);
+                }
+
+                cursor = loadResult.getCursor();
+            } catch (Exception ex) {
                 try {
-                    DelayTaskStorage.LoadUnExecutedTaskResult loadResult = this.delayTaskStorage.loadUnExecutedTask(slotRange, cursor, endTime);
-                    // 加载完毕就推出当前循环
-                    if (loadResult == null || loadResult.getTaskList() == null || loadResult.getTaskList().size() == 0) {
-                        break;
-                    }
-
-                    for (SimpleDelayTask delayTask : loadResult.getTaskList()) {
-                        pushTaskToTimer(delayTask);
-                    }
-
-                    cursor = loadResult.getCursor();
-                } catch (Exception ex) {
-                    try {
-                        Thread.sleep(10 * 1000);
-                    } catch (InterruptedException e) {
-                        logger.warn("interrupt happened when sleeping for next load from db.");
-                    }
+                    Thread.sleep(10 * 1000);
+                } catch (InterruptedException e) {
+                    logger.warn("interrupt happened when sleeping for next load from db.");
                 }
             }
         }
