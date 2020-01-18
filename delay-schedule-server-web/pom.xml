@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>delay-schedule</artifactId>
+        <groupId>com.tim</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>delay-schedule-server-web</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--引用delay-schedule-server-rabbitmq-spring-boot-starter可以实现适配RabbitMQ的延时任务队列功能-->
+        <dependency>
+            <groupId>com.tim</groupId>
+            <artifactId>delay-schedule-server-rabbitmq-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>
