@@ -6,6 +6,8 @@ import com.tim.delayschedule.server.core.model.KeyValuePair;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
 import com.tim.delayschedule.server.core.storage.jdbc.dao.DelayTaskDao;
 import com.tim.delayschedule.server.core.storage.jdbc.mapper.DelayTaskMapper;
+import com.tim.delayschedule.server.core.storage.jdbc.mapper.SimpleScheduleEntryDbMapper;
+import com.tim.delayschedule.server.core.storage.jdbc.model.SimpleScheduleEntryDb;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -55,14 +57,14 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
     }
 
     @Override
-    public List<ScheduleEntry> selectBySlotIdWithScheduleTime(List<Integer> slotIds, long scheduleTime, int pageSize, int cursor) {
+    public List<SimpleScheduleEntryDb> selectBySlotIdWithScheduleTime(List<Integer> slotIds, long cursor, long scheduleTime) {
 
-        List<ScheduleEntry> delayTasks = null;
+        List<SimpleScheduleEntryDb> delayTasks = null;
 
         if (slotIds == null || slotIds.size() == 0){
             return delayTasks;
         }
-        StringBuilder SQL = new StringBuilder("select * from delay_task where slot_id in (");
+        StringBuilder SQL = new StringBuilder("select record_id, id, slot_id, schedule_time from delay_task where slot_id in (");
 
         for (int i = 0; i < slotIds.size(); i++){
             SQL.append(slotIds.get(i)+",");
@@ -70,9 +72,9 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
 
         SQL.replace(SQL.length() - 1, SQL.length(), ") ");
 
-        SQL.append("and schedule_time <= ? limit ? offset ?");
+        SQL.append("and record_id >= ? and schedule_time <= ? and status = ?");
 
-        delayTasks = jdbcTemplate.query(SQL.toString(), new Object[]{scheduleTime, pageSize, cursor}, new DelayTaskMapper());
+        delayTasks = jdbcTemplate.query(SQL.toString(), new Object[]{cursor, scheduleTime, TaskStatus.NEW.toValue()}, new SimpleScheduleEntryDbMapper());
 
         return delayTasks;
     }

@@ -50,7 +50,7 @@ public interface DelayTaskStorage {
      *
      * @param slotIdList
      * @param cursor     游标，从cursor往后的才加载
-     * @param endTime    截至时间，只加载endTime之前的数据
+     * @param endTime    截至时间，只加载endTime之前的数据且改数据状态是NEW
      * @return
      */
     LoadUnExecutedTaskResult loadUnExecutedTask(List<Integer> slotIdList, long cursor, long endTime);
@@ -65,7 +65,7 @@ public interface DelayTaskStorage {
         /**
          * taskList
          */
-        private List<SimpleScheduleEntry> taskList;
+        private List<? extends SimpleScheduleEntry> taskList;
 
     }
 }

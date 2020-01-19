@@ -7,6 +7,7 @@ import com.tim.delayschedule.server.core.model.KeyValuePair;
 import com.tim.delayschedule.server.core.storage.DelayTaskStorage;
 import com.tim.delayschedule.server.core.storage.jdbc.dao.DelayTaskDao;
 import com.tim.delayschedule.server.core.storage.jdbc.dao.impl.DelayTaskDaoImpl;
+import com.tim.delayschedule.server.core.storage.jdbc.model.SimpleScheduleEntryDb;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -61,7 +62,7 @@ public class JdbcDelayTaskStorage implements DelayTaskStorage {
 
         for (String id : taskIdList) {
 
-            taskIdAndStatus.add(new KeyValuePair<>(id, TaskStatus.DELETED));
+            taskIdAndStatus.add(new KeyValuePair<>(id, TaskStatus.FINISH));
         }
 
         delayTaskDao.updateStatusByIdBatch(taskIdAndStatus);
@@ -70,11 +71,25 @@ public class JdbcDelayTaskStorage implements DelayTaskStorage {
     @Override
     public void markTaskExecuted(String taskId) {
 
-        delayTaskDao.updateStatusById(taskId, TaskStatus.DELETED);
+        delayTaskDao.updateStatusById(taskId, TaskStatus.FINISH);
     }
 
     @Override
     public LoadUnExecutedTaskResult loadUnExecutedTask(List<Integer> slotIdList, long cursor, long endTime) {
-        return null;
+
+        LoadUnExecutedTaskResult result = new LoadUnExecutedTaskResult();
+        long currentCursor = cursor;
+
+        List<SimpleScheduleEntryDb> simpleScheduleEntryDbs = delayTaskDao.selectBySlotIdWithScheduleTime(slotIdList, currentCursor, endTime);
+
+        if (simpleScheduleEntryDbs != null && simpleScheduleEntryDbs.size() != 0){
+            //最后一条数据就是最大的id值
+            currentCursor = simpleScheduleEntryDbs.get(simpleScheduleEntryDbs.size() - 1).getRecordId() + 1;
+        }
+
+        result.setCursor(currentCursor);
+        result.setTaskList(simpleScheduleEntryDbs);
+
+        return result;
     }
 }
