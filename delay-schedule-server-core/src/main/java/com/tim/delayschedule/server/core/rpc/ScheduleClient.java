@@ -1,4 +1,7 @@
 package com.tim.delayschedule.server.core.rpc;
 
-public class ScheduleClient {
+import com.tim.delayschedule.server.core.model.ScheduleEntry;
+
+public interface ScheduleClient {
+    void push(ScheduleEntry task);
 }
