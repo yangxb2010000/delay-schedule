@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option java_package = "com.tim.delayschedule.server.core.rpc";
+service ScheduleService {
+    rpc PushTask (PushTaskRequest) returns (PushTaskReply) {
+    };
+
+    rpc ReleaseSlot (ReleaseSlotRequest) returns (ReleaseSlotReply) {
+    };
+}
+
+message PushTaskRequest {
+    string id = 1;
+    /**
+     * task类型
+     */
+    string type = 2;
+    /**
+     * 执行task需要的参数体
+     */
+    string payload = 3;
+
+    int32 ttr = 4;
+}
+
+message PushTaskReply {
+    enum ResultCode {
+        Success = 0;
+        NotHandled = 1;
+        UnknownReason = 2;
+    }
+    ResultCode resultCode = 2;
+}
+
+message ReleaseSlotRequest {
+    int32 slotId = 1;
+    int32 slotChangeVersion = 2;
+}
+
+message ReleaseSlotReply {
+    bool isSuccess = 1;
+}

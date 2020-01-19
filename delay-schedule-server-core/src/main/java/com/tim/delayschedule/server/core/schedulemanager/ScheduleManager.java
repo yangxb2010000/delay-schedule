@@ -1,6 +1,7 @@
 package com.tim.delayschedule.server.core.schedulemanager;
 
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
+import com.tim.delayschedule.server.core.rpc.ScheduleServerGrpc;
 
 /**
  * @author xiaobing
@@ -18,7 +19,14 @@ public interface ScheduleManager {
      *
      * @param task
      */
-    void push(ScheduleEntry task);
+    ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleEntry task);
+
+    /**
+     * 添加Schedule entry
+     *
+     * @param task
+     */
+    ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleServerGrpc.PushTaskRequest task);
 
     enum PushScheduleEntryResult {
         /**

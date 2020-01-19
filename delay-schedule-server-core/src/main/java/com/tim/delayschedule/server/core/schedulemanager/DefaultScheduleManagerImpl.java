@@ -4,6 +4,7 @@ import com.tim.delayschedule.server.core.executor.ScheduleTaskExecutor;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
 import com.tim.delayschedule.server.core.model.SimpleScheduleEntry;
 import com.tim.delayschedule.server.core.rpc.ScheduleClient;
+import com.tim.delayschedule.server.core.rpc.ScheduleServerGrpc;
 import com.tim.delayschedule.server.core.schedulemanager.timer.Timer;
 import com.tim.delayschedule.server.core.schedulemanager.timer.TimerTask;
 import com.tim.delayschedule.server.core.slotsharding.SlotSharding;
@@ -66,13 +67,20 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
     }
 
     @Override
-    public void push(ScheduleEntry task) {
+    public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleEntry task) {
         if (this.internalImpl.push(task) != PushScheduleEntryResult.FAIL_NOTHANDLED) {
-            return;
+            return null;
         }
 
         //如果当前SchedulerServer不负责该处理就尝试调用远程Server
-        this.scheduleClient.push(task);
+//        this.scheduleClient.push(task);
+        return null;
+    }
+
+    //TODO: 实现逻辑
+    @Override
+    public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleServerGrpc.PushTaskRequest task) {
+        return null;
     }
 
     /**
@@ -255,6 +263,5 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
      * 通过rpc调用其他SchedulerServer实现转发逻辑
      */
     public static class RemoteScheduleManagerImpl {
-
     }
 }

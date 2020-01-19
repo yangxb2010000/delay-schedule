@@ -28,6 +28,10 @@
         <springboot.mybatis.version>1.1.1</springboot.mybatis.version>
         <zookeeper.version>3.4.14</zookeeper.version>
         <mockito.core.version>2.12.0</mockito.core.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <grpc.version>1.26.0</grpc.version>
+        <protobuf.version>3.11.0</protobuf.version>
+        <protoc.version>3.11.0</protoc.version>
 
         <!-- 文件拷贝时的编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,6 +55,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-bom</artifactId>
+                <version>${grpc.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.tim</groupId>
                 <artifactId>delay-schedule-server-core</artifactId>
@@ -135,6 +147,12 @@
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.core.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
