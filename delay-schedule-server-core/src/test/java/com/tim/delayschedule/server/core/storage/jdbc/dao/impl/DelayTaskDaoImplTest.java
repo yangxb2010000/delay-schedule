@@ -6,9 +6,12 @@ import com.tim.delayschedule.server.core.constant.TaskStatus;
 import com.tim.delayschedule.server.core.constant.TaskType;
 import com.tim.delayschedule.server.core.model.KeyValuePair;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
+import com.tim.delayschedule.server.core.storage.DelayTaskStorage;
+import com.tim.delayschedule.server.core.storage.jdbc.JdbcDelayTaskStorage;
 import com.tim.delayschedule.server.core.storage.jdbc.dao.DelayTaskDao;
 import com.tim.delayschedule.utils.DataSourceUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -17,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-//@Ignore
+@Ignore
 public class DelayTaskDaoImplTest {
 
     private static DelayTaskDao delayTaskDao = new DelayTaskDaoImpl(DataSourceUtils.initDataSource());
@@ -37,59 +40,7 @@ public class DelayTaskDaoImplTest {
 
     @Test
     public void selectBySlotIdWithScheduleTime() {
-        List<ScheduleEntry> result = null;
 
-        List<Integer> slotIds = new ArrayList<>();
-        long schedultTime = 9999999999999L;
-
-        int pageSize = 3;
-        int cursor = 0;
-
-        slotIds.add(1);
-        slotIds.add(2);
-
-        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds, schedultTime, pageSize, cursor);
-
-        System.out.println(result);
-
-        Assert.assertEquals(3, result.size());
-
-        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds, schedultTime, pageSize, cursor + pageSize);
-
-        System.out.println(result);
-
-        Assert.assertEquals(3, result.size());
-
-        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds, schedultTime, pageSize, cursor + 2 * pageSize);
-
-        System.out.println(result);
-
-        Assert.assertEquals(3, result.size());
-
-        ScheduleEntry delayTask = new ScheduleEntry();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
-        String currentTime = format.format(new Date());
-
-        delayTask.setId(UUID.randomUUID().toString());
-        delayTask.setSlotId(1);
-        delayTask.setStatus(TaskStatus.NEW);
-        delayTask.setExecutedCount(2);
-        delayTask.setTtr(3);
-        delayTask.setPublishTime(System.currentTimeMillis());
-        delayTask.setScheduleTime(System.currentTimeMillis());
-        delayTask.setCreateTime(currentTime);
-        delayTask.setPayload("test data");
-        delayTask.setUpdateTime(currentTime);
-        delayTask.setType(TaskType.DELAY_TASK);
-
-        //插入成功数据
-        delayTaskDao.insert(delayTask);
-
-        result = delayTaskDao.selectBySlotIdWithScheduleTime(slotIds, schedultTime, pageSize, cursor + 3 * pageSize);
-
-        System.out.println(result);
-
-        Assert.assertEquals(1, result.size());
     }
 
     @Test

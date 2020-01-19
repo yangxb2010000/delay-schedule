@@ -4,6 +4,7 @@ import com.tim.delayschedule.server.core.constant.TaskDaoResult;
 import com.tim.delayschedule.server.core.constant.TaskStatus;
 import com.tim.delayschedule.server.core.model.KeyValuePair;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
+import com.tim.delayschedule.server.core.storage.jdbc.model.SimpleScheduleEntryDb;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface DelayTaskDao {
      * @Param : [slotIds, scheduleTime, pageSize, cursor]
      * @Return : java.util.List<com.tim.delayschedule.core.model.DelayTask>
      */
-    List<ScheduleEntry> selectBySlotIdWithScheduleTime(List<Integer> slotIds, long scheduleTime, int pageSize, int cursor);
+    List<SimpleScheduleEntryDb> selectBySlotIdWithScheduleTime(List<Integer> slotIds, long cursor, long scheduleTime);
 
     /**
      * 根据id删除DelayTask
