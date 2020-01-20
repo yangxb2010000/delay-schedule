@@ -1,6 +1,7 @@
 package com.tim.delayschedule.server.core.model;
 
 import com.tim.delayschedule.server.core.constant.TaskStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**

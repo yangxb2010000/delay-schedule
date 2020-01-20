@@ -1,4 +1,4 @@
-package com.tim.delayschedule.client.dto;
+package com.tim.delayschedule.server.web.dto;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import lombok.Data;
  * @Date : 2020-01-16 13:13
  */
 @Data
-public class DelayTaskDTO {
+public class ScheduleEntryDTO {
 
     /**
      * task类型
