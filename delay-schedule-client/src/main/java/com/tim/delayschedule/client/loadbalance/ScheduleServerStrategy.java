@@ -1,7 +1,6 @@
 package com.tim.delayschedule.client.loadbalance;
 
-
-import com.tim.delayschedule.client.loadbalance.model.ScheduleServer;
+import com.tim.delayschedule.client.loadbalance.model.ScheduleWeightServer;
 import com.tim.delayschedule.client.loadbalance.model.ServerInstance;
 
 import java.util.List;
@@ -15,6 +14,6 @@ import java.util.List;
  */
 public interface ScheduleServerStrategy {
 
-    ServerInstance getServerInstance(List<ScheduleServer> servers);
+    ServerInstance getServerInstance(List<ScheduleWeightServer> servers);
 
 }
