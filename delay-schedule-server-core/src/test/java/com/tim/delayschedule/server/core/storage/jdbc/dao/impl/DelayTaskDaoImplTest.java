@@ -6,8 +6,6 @@ import com.tim.delayschedule.server.core.constant.TaskStatus;
 import com.tim.delayschedule.server.core.constant.TaskType;
 import com.tim.delayschedule.server.core.model.KeyValuePair;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
-import com.tim.delayschedule.server.core.storage.DelayTaskStorage;
-import com.tim.delayschedule.server.core.storage.jdbc.JdbcDelayTaskStorage;
 import com.tim.delayschedule.server.core.storage.jdbc.dao.DelayTaskDao;
 import com.tim.delayschedule.utils.DataSourceUtils;
 import org.junit.Assert;
@@ -71,7 +69,7 @@ public class DelayTaskDaoImplTest {
         delayTask.setExecutedCount(2);
         delayTask.setTtr(3);
         delayTask.setPublishTime(System.currentTimeMillis());
-        delayTask.setScheduleTime(System.currentTimeMillis());
+        delayTask.setNextScheduleTime(System.currentTimeMillis());
         delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
         delayTask.setUpdateTime(currentTime);
@@ -105,7 +103,7 @@ public class DelayTaskDaoImplTest {
         delayTask.setExecutedCount(2);
         delayTask.setTtr(3);
         delayTask.setPublishTime(System.currentTimeMillis());
-        delayTask.setScheduleTime(System.currentTimeMillis());
+        delayTask.setNextScheduleTime(System.currentTimeMillis());
         delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
         delayTask.setUpdateTime(currentTime);
@@ -119,7 +117,7 @@ public class DelayTaskDaoImplTest {
         delayTask2.setExecutedCount(2);
         delayTask2.setTtr(3);
         delayTask2.setPublishTime(System.currentTimeMillis());
-        delayTask2.setScheduleTime(System.currentTimeMillis());
+        delayTask2.setNextScheduleTime(System.currentTimeMillis());
         delayTask2.setCreateTime(currentTime);
         delayTask2.setPayload("test data");
         delayTask2.setUpdateTime(currentTime);

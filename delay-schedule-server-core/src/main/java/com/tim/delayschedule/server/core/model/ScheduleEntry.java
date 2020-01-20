@@ -35,7 +35,7 @@ public class ScheduleEntry {
     /**
      * task计划执行时间
      */
-    private Long scheduleTime;
+    private Long nextScheduleTime;
 
     /**
      * task实际执行时间

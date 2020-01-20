@@ -26,7 +26,7 @@ public class DelayTaskMapper implements RowMapper<ScheduleEntry> {
         scheduleEntry.setType(rs.getString("type"));
         scheduleEntry.setPayload(rs.getString("payload"));
         scheduleEntry.setPublishTime(rs.getLong("publish_time"));
-        scheduleEntry.setScheduleTime(rs.getLong("schedule_time"));
+        scheduleEntry.setNextScheduleTime(rs.getLong("schedule_time"));
         scheduleEntry.setExecuteTime(rs.getLong("execute_time"));
         scheduleEntry.setFinishedTime(rs.getLong("finished_time"));
         scheduleEntry.setTtr(rs.getInt("ttr"));

@@ -20,7 +20,10 @@ message PushTaskRequest {
      */
     string payload = 3;
 
-    int32 ttr = 4;
+    /**
+    * 该task计划执行时间
+    */
+    int64 scheduleTime = 4;
 }
 
 message PushTaskReply {

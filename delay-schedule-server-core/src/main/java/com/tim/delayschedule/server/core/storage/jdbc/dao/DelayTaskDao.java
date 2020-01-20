@@ -25,7 +25,7 @@ public interface DelayTaskDao {
 
     /**
      * 根据slotIds和scheduleTime分页查询
-     * @Param : [slotIds, scheduleTime, pageSize, cursor]
+     * @Param : [slotIds, nextScheduleTime, pageSize, cursor]
      * @Return : java.util.List<com.tim.delayschedule.core.model.DelayTask>
      */
     List<SimpleScheduleEntryDb> selectBySlotIdWithScheduleTime(List<Integer> slotIds, long cursor, long scheduleTime);

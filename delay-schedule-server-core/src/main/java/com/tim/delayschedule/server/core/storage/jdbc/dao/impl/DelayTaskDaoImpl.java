@@ -109,7 +109,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
                 " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         int result = jdbcTemplate.update( SQL, new Object[]{scheduleEntry.getId(), scheduleEntry.getSlotId(), scheduleEntry.getType(),
-                scheduleEntry.getPayload(), scheduleEntry.getPublishTime(), scheduleEntry.getScheduleTime(), scheduleEntry.getExecuteTime(),
+                scheduleEntry.getPayload(), scheduleEntry.getPublishTime(), scheduleEntry.getNextScheduleTime(), scheduleEntry.getExecuteTime(),
                 scheduleEntry.getFinishedTime(), scheduleEntry.getTtr(), scheduleEntry.getExecutedCount(), scheduleEntry.getStatus().toValue(),
                 scheduleEntry.getCreateTime(), scheduleEntry.getUpdateTime()} );
 
@@ -141,7 +141,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
                 ps.setObject(3, scheduleEntry.getType());
                 ps.setObject(4, scheduleEntry.getPayload());
                 ps.setObject(5, scheduleEntry.getPublishTime());
-                ps.setObject(6, scheduleEntry.getScheduleTime());
+                ps.setObject(6, scheduleEntry.getNextScheduleTime());
                 ps.setObject(7, scheduleEntry.getExecuteTime());
                 ps.setObject(8, scheduleEntry.getFinishedTime());
                 ps.setObject(9, scheduleEntry.getTtr());
