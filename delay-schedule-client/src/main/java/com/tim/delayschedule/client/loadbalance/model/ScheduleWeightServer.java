@@ -10,7 +10,7 @@ import lombok.Data;
  * @Date : 2020-01-19 17:27
  */
 @Data
-public class ScheduleServer {
+public class ScheduleWeightServer {
 
     /**
      * 服务器节点信息
@@ -27,7 +27,7 @@ public class ScheduleServer {
      */
     private Integer currentWeight;
 
-    public ScheduleServer(ServerInstance server, Integer originalWeight) {
+    public ScheduleWeightServer(ServerInstance server, Integer originalWeight) {
         this.server = server;
         this.originalWeight = originalWeight;
         this.currentWeight = originalWeight;

@@ -1,7 +1,5 @@
-package com.tim.delayschedule.server.core.model;
+package com.tim.delayschedule.client.temp;
 
-import com.tim.delayschedule.server.core.constant.TaskStatus;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -36,7 +34,7 @@ public class ScheduleEntry {
     /**
      * task计划执行时间
      */
-    private Long nextScheduleTime;
+    private Long scheduleTime;
 
     /**
      * task实际执行时间

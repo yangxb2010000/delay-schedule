@@ -1,7 +1,7 @@
 package com.tim.delayschedule.client.loadbalance.strategy;
 
 import com.tim.delayschedule.client.loadbalance.ScheduleServerStrategy;
-import com.tim.delayschedule.client.loadbalance.model.ScheduleServer;
+import com.tim.delayschedule.client.loadbalance.model.ScheduleWeightServer;
 import com.tim.delayschedule.client.loadbalance.model.ServerInstance;
 
 import java.util.*;
@@ -16,7 +16,7 @@ import java.util.*;
 public class SmoothWeightSchedule implements ScheduleServerStrategy {
 
     @Override
-    public ServerInstance getServerInstance(List<ScheduleServer> servers) {
+    public ServerInstance getServerInstance(List<ScheduleWeightServer> servers) {
         if (servers == null || servers.size() == 0){
             return null;
         }
@@ -24,10 +24,10 @@ public class SmoothWeightSchedule implements ScheduleServerStrategy {
         // 原始权重之和
         int weightSum = 0;
         // 最大当前权重对象
-        ScheduleServer maxWeightServer = servers.get(0);
+        ScheduleWeightServer maxWeightServer = servers.get(0);
 
         // 计算最大当前权重对象，同时求原始权重之和
-        for (ScheduleServer scheduleServer : servers){
+        for (ScheduleWeightServer scheduleServer : servers){
             weightSum += scheduleServer.getOriginalWeight();
             if (scheduleServer.getCurrentWeight() > maxWeightServer.getCurrentWeight()){
                 maxWeightServer = scheduleServer;
@@ -41,7 +41,7 @@ public class SmoothWeightSchedule implements ScheduleServerStrategy {
          */
         maxWeightServer.setCurrentWeight(maxWeightServer.getCurrentWeight() - weightSum);
 
-        for (ScheduleServer scheduleServer : servers){
+        for (ScheduleWeightServer scheduleServer : servers){
             scheduleServer.setCurrentWeight(scheduleServer.getCurrentWeight() + scheduleServer.getOriginalWeight());
         }
 

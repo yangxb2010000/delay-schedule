@@ -1,18 +1,27 @@
-package com.tim.delayschedule.client.loadbalance;
+package com.tim.delayschedule.client.configuration;
 
 import com.tim.delayschedule.client.loadbalance.model.ScheduleWeightServer;
 import com.tim.delayschedule.client.loadbalance.model.ServerInstance;
-import com.tim.delayschedule.client.loadbalance.strategy.SmoothWeightSchedule;
-import org.junit.Test;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleServerStrategyTest {
-    private ScheduleServerStrategy scheduleServerStrategy = new SmoothWeightSchedule();
+/**
+ * 功能描述 : TODO
+ *
+ * @Author : wang hui
+ * @Email : 793147654@qq.com
+ * @Date : 2020-01-20 11:13
+ */
+@Data
+public class ScheduleServerConfiguration {
 
-    @Test
-    public void getServerInstance() {
+    public static List<ScheduleWeightServer> scheduleWeightServers = initScheduleWeightServers();
+
+    private static List<ScheduleWeightServer> initScheduleWeightServers(){
+
+        //TODO 后期改为读取配置文件
         List<ScheduleWeightServer> servers = new ArrayList<>();
 
         servers.add(new ScheduleWeightServer(new ServerInstance("127.0.0.1",1),1));
@@ -20,10 +29,6 @@ public class ScheduleServerStrategyTest {
         servers.add(new ScheduleWeightServer(new ServerInstance("127.0.0.3",1),3));
         servers.add(new ScheduleWeightServer(new ServerInstance("127.0.0.4",1),4));
 
-        for (int i = 0; i < 10; i++){
-            ServerInstance serverInstance = scheduleServerStrategy.getServerInstance(servers);
-            System.out.println(serverInstance.getIp());
-        }
-
+        return servers;
     }
 }
