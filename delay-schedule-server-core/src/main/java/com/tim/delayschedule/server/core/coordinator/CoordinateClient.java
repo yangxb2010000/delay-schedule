@@ -1,5 +1,7 @@
 package com.tim.delayschedule.server.core.coordinator;
 
+import java.util.List;
+
 /**
  * @author wangkun
  */
@@ -17,6 +19,13 @@ public interface CoordinateClient {
      * @return
      */
     Node get(String path);
+
+    /**
+     * 获得子节点
+     * @param path
+     * @return
+     */
+    List<Node> getChildren(String path);
 
     /**
      * 创建一个节点，如果存在则修改
@@ -37,5 +46,13 @@ public interface CoordinateClient {
      * @param serverName
      */
     void unRegister(String serverName);
+
+    /**
+     * 获取互斥锁，获取失败则阻塞线程，直到抢锁完成
+     * @param lockName
+     */
+    void accquireLock(String lockName);
+
+
 
 }
