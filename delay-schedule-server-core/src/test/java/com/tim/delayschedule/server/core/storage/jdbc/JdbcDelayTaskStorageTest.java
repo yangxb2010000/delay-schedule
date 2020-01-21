@@ -15,8 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
-
 @Ignore
 public class JdbcDelayTaskStorageTest {
 
@@ -69,7 +67,7 @@ public class JdbcDelayTaskStorageTest {
         delayTask.setExecutedCount(2);
         delayTask.setTtr(3);
         delayTask.setPublishTime(System.currentTimeMillis());
-        delayTask.setScheduleTime(System.currentTimeMillis());
+        delayTask.setNextScheduleTime(System.currentTimeMillis());
         delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
         delayTask.setUpdateTime(currentTime);

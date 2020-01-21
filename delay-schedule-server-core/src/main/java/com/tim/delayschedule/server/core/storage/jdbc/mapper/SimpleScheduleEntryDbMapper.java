@@ -1,6 +1,5 @@
 package com.tim.delayschedule.server.core.storage.jdbc.mapper;
 
-import com.tim.delayschedule.server.core.model.SimpleScheduleEntry;
 import com.tim.delayschedule.server.core.storage.jdbc.model.SimpleScheduleEntryDb;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -24,7 +23,7 @@ public class SimpleScheduleEntryDbMapper implements RowMapper<SimpleScheduleEntr
         simpleScheduleEntryDb.setRecordId(rs.getInt("record_id"));
         simpleScheduleEntryDb.setId(rs.getString("id"));
         simpleScheduleEntryDb.setSlotId(rs.getInt("slot_id"));
-        simpleScheduleEntryDb.setScheduleTime(rs.getLong("schedule_time"));
+        simpleScheduleEntryDb.setNextScheduleTime(rs.getLong("schedule_time"));
 
         return simpleScheduleEntryDb;
     }

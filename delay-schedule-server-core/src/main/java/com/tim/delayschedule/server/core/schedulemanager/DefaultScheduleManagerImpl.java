@@ -67,20 +67,16 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
     }
 
     @Override
-    public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleEntry task) {
-        if (this.internalImpl.push(task) != PushScheduleEntryResult.FAIL_NOTHANDLED) {
-            return null;
+    public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleServerGrpc.PushTaskRequest pushTaskRequest) {
+        ScheduleEntry scheduleEntry = new ScheduleEntry();
+
+        ScheduleServerGrpc.PushTaskReply.ResultCode internalPushResultCode = this.internalImpl.push(scheduleEntry);
+        if (internalPushResultCode != ScheduleServerGrpc.PushTaskReply.ResultCode.NotHandled) {
+            return internalPushResultCode;
         }
 
         //如果当前SchedulerServer不负责该处理就尝试调用远程Server
-//        this.scheduleClient.push(task);
-        return null;
-    }
-
-    //TODO: 实现逻辑
-    @Override
-    public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleServerGrpc.PushTaskRequest task) {
-        return null;
+        return this.scheduleClient.push(pushTaskRequest, scheduleEntry.getSlotId());
     }
 
     /**
@@ -128,7 +124,7 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
             });
         }
 
-        public PushScheduleEntryResult push(ScheduleEntry task) {
+        public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleEntry task) {
             if (task.getId() == null || task.getId().length() == 0) {
                 throw new RuntimeException("task's id cannot be null or empty.");
             }
@@ -137,7 +133,7 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
             try {
                 SimpleScheduleEntry simpleScheduleEntry = toSimple(task);
                 if (!shouldHandle(simpleScheduleEntry)) {
-                    return PushScheduleEntryResult.FAIL_NOTHANDLED;
+                    return ScheduleServerGrpc.PushTaskReply.ResultCode.NotHandled;
                 }
 
                 //先进行持久化，如果持久化成功才放入内存的timer中，如果写入失败就直接返回失败
@@ -147,11 +143,11 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
             } finally {
                 handledSlotSetLock.readLock().unlock();
             }
-            return PushScheduleEntryResult.SUCCESS;
+            return ScheduleServerGrpc.PushTaskReply.ResultCode.Success;
         }
 
         private void pushTaskToTimer(SimpleScheduleEntry simpleTask) {
-            timer.addTask(new TimerTask(simpleTask.getScheduleTime(), () -> {
+            timer.addTask(new TimerTask(simpleTask.getNextScheduleTime(), () -> {
                 // 由于当前实例覆盖的slot可能会变化，所以执行前需要再次检测一下
                 if (shouldHandle(simpleTask)) {
                     ScheduleEntry scheduleEntry = this.delayTaskStorage.getTask(simpleTask.getId());
@@ -253,15 +249,8 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
             SimpleScheduleEntry sdt = new SimpleScheduleEntry();
             sdt.setId(scheduleEntry.getId());
             sdt.setSlotId(scheduleEntry.getSlotId());
-            sdt.setScheduleTime(scheduleEntry.getScheduleTime());
+            sdt.setNextScheduleTime(scheduleEntry.getNextScheduleTime());
 
             return sdt;
         }
-    }
-
-    /**
-     * 通过rpc调用其他SchedulerServer实现转发逻辑
-     */
-    public static class RemoteScheduleManagerImpl {
-    }
-}
+    }}
