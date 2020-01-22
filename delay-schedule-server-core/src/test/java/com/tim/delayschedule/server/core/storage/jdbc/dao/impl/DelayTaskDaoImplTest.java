@@ -12,9 +12,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,9 +69,7 @@ public class DelayTaskDaoImplTest {
         delayTask.setTtr(3);
         delayTask.setPublishTime(currentTime);
         delayTask.setNextScheduleTime(currentTime);
-        delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
-        delayTask.setUpdateTime(currentTime);
         delayTask.setType(TaskType.DELAY_TASK);
 
 
@@ -106,9 +102,7 @@ public class DelayTaskDaoImplTest {
         delayTask.setTtr(3);
         delayTask.setPublishTime(currentTime);
         delayTask.setNextScheduleTime(currentTime);
-        delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
-        delayTask.setUpdateTime(currentTime);
         delayTask.setType(TaskType.DELAY_TASK);
 
         delayTasks.add(delayTask);
@@ -120,9 +114,7 @@ public class DelayTaskDaoImplTest {
         delayTask2.setTtr(3);
         delayTask2.setPublishTime(System.currentTimeMillis());
         delayTask2.setNextScheduleTime(System.currentTimeMillis());
-        delayTask2.setCreateTime(currentTime);
         delayTask2.setPayload("test data");
-        delayTask2.setUpdateTime(currentTime);
         delayTask2.setType(TaskType.DELAY_TASK);
         delayTasks.add(delayTask2);
 

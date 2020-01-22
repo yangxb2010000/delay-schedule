@@ -107,11 +107,12 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
         String SQL = "insert into delay_task (id, slot_id, type, payload, publish_time, schedule_time, execute_time, finished_time, " +
                 "ttr, executed_count, status, create_time, update_time)" +
                 " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        long currentTime = System.currentTimeMillis();
 
         int result = jdbcTemplate.update( SQL, new Object[]{scheduleEntry.getId(), scheduleEntry.getSlotId(), scheduleEntry.getType(),
                 scheduleEntry.getPayload(), scheduleEntry.getPublishTime(), scheduleEntry.getNextScheduleTime(), scheduleEntry.getExecuteTime(),
                 scheduleEntry.getFinishedTime(), scheduleEntry.getTtr(), scheduleEntry.getExecutedCount(), scheduleEntry.getStatus().toValue(),
-                scheduleEntry.getCreateTime(), scheduleEntry.getUpdateTime()} );
+                currentTime, currentTime} );
 
         if (result == 0){
             return TaskDaoResult.INSERT_FAIL;
@@ -130,6 +131,7 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
         String SQL = "insert into delay_task (id, slot_id, type, payload, publish_time, schedule_time, execute_time, finished_time, " +
                 "ttr, executed_count, status, create_time, update_time)" +
                 " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        long currentTime = System.currentTimeMillis();
 
         jdbcTemplate.batchUpdate(SQL, new BatchPreparedStatementSetter() {
             @Override
@@ -147,8 +149,8 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
                 ps.setObject(9, scheduleEntry.getTtr());
                 ps.setObject(10, scheduleEntry.getExecutedCount());
                 ps.setObject(11, scheduleEntry.getStatus().toValue());
-                ps.setObject(12, scheduleEntry.getCreateTime());
-                ps.setObject(13, scheduleEntry.getUpdateTime());
+                ps.setObject(12, currentTime);
+                ps.setObject(13, currentTime);
             }
 
             @Override

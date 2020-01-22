@@ -9,9 +9,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,9 +67,7 @@ public class JdbcDelayTaskStorageTest {
         delayTask.setTtr(3);
         delayTask.setPublishTime(currentTime);
         delayTask.setNextScheduleTime(currentTime);
-        delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
-        delayTask.setUpdateTime(currentTime);
         delayTask.setType(TaskType.DELAY_TASK);
 
         //插入成功数据

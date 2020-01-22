@@ -64,14 +64,4 @@ public class ScheduleEntry {
      */
     private TaskStatus status = TaskStatus.NEW;
 
-
-    /**
-     * 数据库记录创建时间,格式为2020-01-16 14:49:12  共19位
-     */
-    private Long createTime;
-
-    /**
-     * 数据库记录修改时间
-     */
-    private Long updateTime;
 }
