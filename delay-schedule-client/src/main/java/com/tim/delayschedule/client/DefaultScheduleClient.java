@@ -32,13 +32,23 @@ public class DefaultScheduleClient implements ScheduleClient{
     @Override
     public boolean addScheduleEntry(ScheduleEntry scheduleEntry) {
 
+        boolean sendServerResult = false;
+        int retryCount = ScheduleServerConfiguration.retryCount;
+
         //判断是否需要限流
 
 
-        //找到合适的server地址
-        ServerInstance server = scheduleServerStrategy.getServerInstance(ScheduleServerConfiguration.scheduleWeightServers);
+        //防止server挂掉，知道发送成功
+        //极端情况下，会一直选到该服务器，应加重试次数retryCount
+        while (!sendServerResult && retryCount-- != 0){
+            //找到合适的server地址
+            ServerInstance server = scheduleServerStrategy.getServerInstance(
+                    ScheduleServerConfiguration.scheduleWeightServers);
 
-        //与server端通信，将该任务信息发送server端
+            //与server端通信，将该任务信息发送server端
+
+        }
+
         return true;
     }
 }

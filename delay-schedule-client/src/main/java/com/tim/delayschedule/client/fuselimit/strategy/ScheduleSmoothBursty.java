@@ -1,4 +1,4 @@
-package com.tim.delayschedule.client.fuselimit.model.strategy;
+package com.tim.delayschedule.client.fuselimit.strategy;
 
 import com.google.common.util.concurrent.RateLimiter;
 import com.tim.delayschedule.client.fuselimit.FuseLimitStrategy;

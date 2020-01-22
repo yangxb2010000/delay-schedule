@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Ignore
+//@Ignore
 public class DelayTaskDaoImplTest {
 
     private static DelayTaskDao delayTaskDao = new DelayTaskDaoImpl(DataSourceUtils.initDataSource());
@@ -58,8 +58,9 @@ public class DelayTaskDaoImplTest {
     @Test
     public void insert() {
         ScheduleEntry delayTask = new ScheduleEntry();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
-        String currentTime = format.format(new Date());
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
+//        String currentTime = format.format(new Date());
+        long currentTime = System.currentTimeMillis();
         TaskDaoResult result;
 
 
@@ -68,8 +69,8 @@ public class DelayTaskDaoImplTest {
         delayTask.setStatus(TaskStatus.NEW);
         delayTask.setExecutedCount(2);
         delayTask.setTtr(3);
-        delayTask.setPublishTime(System.currentTimeMillis());
-        delayTask.setNextScheduleTime(System.currentTimeMillis());
+        delayTask.setPublishTime(currentTime);
+        delayTask.setNextScheduleTime(currentTime);
         delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
         delayTask.setUpdateTime(currentTime);
@@ -91,8 +92,9 @@ public class DelayTaskDaoImplTest {
     public void insertBatch() {
         ScheduleEntry delayTask = new ScheduleEntry();
         ScheduleEntry delayTask2 = new ScheduleEntry();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
-        String currentTime = format.format(new Date());
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
+//        String currentTime = format.format(new Date());
+        long currentTime = System.currentTimeMillis();
         List<ScheduleEntry> delayTasks = new ArrayList<>();
         TaskDaoResult result;
 
@@ -102,8 +104,8 @@ public class DelayTaskDaoImplTest {
         delayTask.setStatus(TaskStatus.NEW);
         delayTask.setExecutedCount(2);
         delayTask.setTtr(3);
-        delayTask.setPublishTime(System.currentTimeMillis());
-        delayTask.setNextScheduleTime(System.currentTimeMillis());
+        delayTask.setPublishTime(currentTime);
+        delayTask.setNextScheduleTime(currentTime);
         delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
         delayTask.setUpdateTime(currentTime);

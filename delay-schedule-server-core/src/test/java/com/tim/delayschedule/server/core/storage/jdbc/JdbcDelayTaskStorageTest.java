@@ -57,8 +57,9 @@ public class JdbcDelayTaskStorageTest {
 
         //分页查询后，插入一条数据
         ScheduleEntry delayTask = new ScheduleEntry();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
-        String currentTime = format.format(new Date());
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化时间
+//        String currentTime = format.format(new Date());
+        long currentTime = System.currentTimeMillis();
         String uuid = UUID.randomUUID().toString();
 
         delayTask.setId(uuid);
@@ -66,8 +67,8 @@ public class JdbcDelayTaskStorageTest {
         delayTask.setStatus(TaskStatus.NEW);
         delayTask.setExecutedCount(2);
         delayTask.setTtr(3);
-        delayTask.setPublishTime(System.currentTimeMillis());
-        delayTask.setNextScheduleTime(System.currentTimeMillis());
+        delayTask.setPublishTime(currentTime);
+        delayTask.setNextScheduleTime(currentTime);
         delayTask.setCreateTime(currentTime);
         delayTask.setPayload("test data");
         delayTask.setUpdateTime(currentTime);

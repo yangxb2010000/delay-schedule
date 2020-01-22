@@ -19,6 +19,9 @@ public class ScheduleServerConfiguration {
 
     public static List<ScheduleWeightServer> scheduleWeightServers = initScheduleWeightServers();
 
+    //TODO 后期改为读取配置文件
+    public static int retryCount = 5;
+
     private static List<ScheduleWeightServer> initScheduleWeightServers(){
 
         //TODO 后期改为读取配置文件

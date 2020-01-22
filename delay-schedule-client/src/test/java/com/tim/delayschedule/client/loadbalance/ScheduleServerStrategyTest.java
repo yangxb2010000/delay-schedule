@@ -13,6 +13,8 @@ public class ScheduleServerStrategyTest {
 
     @Test
     public void getServerInstance() {
+
+
         List<ScheduleWeightServer> servers = new ArrayList<>();
 
         servers.add(new ScheduleWeightServer(new ServerInstance("127.0.0.1",1),1));

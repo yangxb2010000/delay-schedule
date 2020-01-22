@@ -1,7 +1,7 @@
 package com.tim.delayschedule.client.fuselimit;
 
 import com.google.common.util.concurrent.RateLimiter;
-import com.tim.delayschedule.client.fuselimit.model.strategy.ScheduleSmoothBursty;
+import com.tim.delayschedule.client.fuselimit.strategy.ScheduleSmoothBursty;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
