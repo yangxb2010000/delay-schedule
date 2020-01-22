@@ -167,9 +167,10 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
             return TaskDaoResult.UPDATE_FAIL;
         }
 
-        String SQL = "update delay_task set status = ? where id = ?";
+        String SQL = "update delay_task set status = ?, update_time = ? where id = ?";
+        long currentTime = System.currentTimeMillis();
 
-        int result = jdbcTemplate.update( SQL, new Object[]{taskStatus.toValue(), id} );
+        int result = jdbcTemplate.update( SQL, new Object[]{taskStatus.toValue(),currentTime, id} );
 
         if (result == 0){
             return TaskDaoResult.UPDATE_FAIL;
@@ -184,7 +185,8 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
             return TaskDaoResult.UPDATE_FAIL;
         }
 
-        String SQL = "update delay_task set status = ? where id = ?";
+        String SQL = "update delay_task set status = ?, update_time = ? where id = ?";
+        long currentTime = System.currentTimeMillis();
 
         jdbcTemplate.batchUpdate(SQL, new BatchPreparedStatementSetter() {
             @Override
@@ -192,7 +194,8 @@ public class DelayTaskDaoImpl implements DelayTaskDao {
                 KeyValuePair<String, TaskStatus> keyValuePair = taskIdAndStatus.get(i);
 
                 ps.setObject(1, keyValuePair.getValue().toValue());
-                ps.setObject(2, keyValuePair.getKey());
+                ps.setObject(2, currentTime);
+                ps.setObject(3, keyValuePair.getKey());
             }
 
             @Override
