@@ -1,7 +1,6 @@
 package com.tim.delayschedule.server.web.utils;
 
 import com.tim.delayschedule.server.core.constant.TaskStatus;
-import com.tim.delayschedule.server.core.constant.TaskType;
 import com.tim.delayschedule.server.core.model.ScheduleEntry;
 import com.tim.delayschedule.server.web.dto.ScheduleEntryDTO;
 
@@ -35,9 +34,9 @@ public class ClassConverUtils {
         scheduleEntry.setTtr(scheduleEntryDTO.getTtr());
         scheduleEntry.setType(scheduleEntryDTO.getType());
         scheduleEntry.setPublishTime(date.getTime());
-        scheduleEntry.setScheduleTime(date.getTime() + scheduleEntryDTO.getDelayTime());
-        scheduleEntry.setCreateTime(currentTime);
-        scheduleEntry.setUpdateTime(currentTime);
+//        scheduleEntry.setScheduleTime(date.getTime() + scheduleEntryDTO.getDelayTime());
+//        scheduleEntry.setCreateTime(currentTime);
+//        scheduleEntry.setUpdateTime(currentTime);
         scheduleEntry.setExecutedCount(scheduleEntryDTO.getExecutedCount());
 
         return scheduleEntry;
