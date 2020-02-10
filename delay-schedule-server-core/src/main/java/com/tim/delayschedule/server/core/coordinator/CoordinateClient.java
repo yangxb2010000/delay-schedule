@@ -41,7 +41,7 @@ public interface CoordinateClient {
      */
     void register(String serverName);
 
-    /**
+    /**DelayTaskDaoImpl
      * 注销某一个服务
      * @param serverName
      */
