@@ -2,7 +2,7 @@ package com.tim.delayschedule.server.web.controller;
 
 import com.tim.delayschedule.server.core.rpc.ScheduleServerGrpc;
 import com.tim.delayschedule.server.core.schedulemanager.ScheduleManager;
-import com.tim.delayschedule.server.web.model.PushTaskRequest;
+import com.tim.delayschedule.server.web.model.PushTaskRestRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,22 +19,22 @@ public class TaskController {
     private ScheduleManager scheduleManager;
 
     @RequestMapping("/push")
-    public ScheduleServerGrpc.PushTaskReply.ResultCode pushTask(@RequestBody PushTaskRequest pushTaskRequest) {
-        if (pushTaskRequest == null) {
+    public ScheduleServerGrpc.PushTaskReply.ResultCode pushTask(@RequestBody PushTaskRestRequest pushTaskRestRequest) {
+        if (pushTaskRestRequest == null) {
             throw new RuntimeException("failed to build PushTaskRequest from request body. please check the request body format.");
         }
 
-        ScheduleServerGrpc.PushTaskReply.ResultCode resultCode = scheduleManager.push(toGrpcPushTaskRequest(pushTaskRequest));
+        ScheduleServerGrpc.PushTaskReply.ResultCode resultCode = scheduleManager.push(toRpcPushTaskRequest(pushTaskRestRequest));
         return resultCode;
     }
 
-    private ScheduleServerGrpc.PushTaskRequest toGrpcPushTaskRequest(PushTaskRequest pushTaskRequest) {
+    private ScheduleServerGrpc.PushTaskRequest toRpcPushTaskRequest(PushTaskRestRequest pushTaskRestRequest) {
         return ScheduleServerGrpc.PushTaskRequest
                 .newBuilder()
-                .setId(pushTaskRequest.getId())
-                .setPayload(pushTaskRequest.getPayload())
-                .setType(pushTaskRequest.getType())
-                .setScheduleTime(pushTaskRequest.getScheduleTime())
+                .setId(pushTaskRestRequest.getId())
+                .setPayload(pushTaskRestRequest.getPayload())
+                .setType(pushTaskRestRequest.getType())
+                .setScheduleTime(pushTaskRestRequest.getScheduleTime())
                 .build();
     }
 }

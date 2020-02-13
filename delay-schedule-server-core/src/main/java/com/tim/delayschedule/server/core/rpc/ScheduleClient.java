@@ -15,14 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ScheduleClient {
     private SlotSharding slotSharding;
 
-    private ConcurrentHashMap<Integer, ScheduleServiceStubWrapper> slot2Stub = new ConcurrentHashMap<Integer, ScheduleServiceStubWrapper>();
+    private ConcurrentHashMap<Integer, ScheduleServiceStubWrapper> stubMap = new ConcurrentHashMap<Integer, ScheduleServiceStubWrapper>();
 
     public ScheduleClient(SlotSharding slotSharding) {
         this.slotSharding = slotSharding;
 
-        this.slotSharding.registerServer2SlotChangeListener(server2SlotMap -> {
-
-        });
+        // register slotsharding
+//        this.slotSharding.registerListener(this);
     }
 
     public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleServerGrpc.PushTaskRequest pushRequest, int slotId) {
@@ -36,7 +35,7 @@ public class ScheduleClient {
     }
 
     private ScheduleServiceGrpc.ScheduleServiceBlockingStub getStub(int slotId) {
-        ScheduleServiceStubWrapper wrapper = slot2Stub.get(slotId);
+        ScheduleServiceStubWrapper wrapper = stubMap.get(slotId);
         if (wrapper != null) {
             return wrapper.getStub();
         }

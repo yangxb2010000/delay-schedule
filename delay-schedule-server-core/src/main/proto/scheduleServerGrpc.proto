@@ -24,6 +24,11 @@ message PushTaskRequest {
     * 该task计划执行时间
     */
     int64 scheduleTime = 4;
+
+    /**
+    * 该请求被转发的次数
+    */
+    int32 transferCount = 5;
 }
 
 message PushTaskReply {

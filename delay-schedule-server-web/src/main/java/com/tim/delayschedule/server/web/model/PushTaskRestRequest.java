@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020/1/20
  */
 @Data
-public class PushTaskRequest {
+public class PushTaskRestRequest {
     private String id;
     /**
      * task类型

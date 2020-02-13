@@ -12,10 +12,7 @@ import com.tim.delayschedule.server.core.storage.DelayTaskStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -25,8 +22,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author xiaobing
  * @date 2020/1/19
  */
-public class DefaultScheduleManagerImpl implements ScheduleManager {
-    private InternalScheduleManagerImpl internalImpl;
+public class DefaultScheduleManagerImpl implements ScheduleManager, SlotSharding.SlotShardingListener {
+    private static final int DEFAULT_MAX_TRANSFER_COUNT = 1;
+    private LocalScheduleManagerImpl localScheduleManagerImpl;
     private SlotSharding slotSharding;
     private ScheduleClient scheduleClient;
 
@@ -37,7 +35,7 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
             ScheduleClient scheduleClient) {
         this.slotSharding = slotSharding;
         this.scheduleClient = scheduleClient;
-        internalImpl = new InternalScheduleManagerImpl(taskExecutor, delayTaskStorage);
+        localScheduleManagerImpl = new LocalScheduleManagerImpl(taskExecutor, delayTaskStorage);
 
         this.init();
     }
@@ -50,40 +48,59 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
             ScheduleClient scheduleClient) {
         this.slotSharding = slotSharding;
         this.scheduleClient = scheduleClient;
-        internalImpl = new InternalScheduleManagerImpl(timer, taskExecutor, delayTaskStorage);
+        localScheduleManagerImpl = new LocalScheduleManagerImpl(timer, taskExecutor, delayTaskStorage);
 
         this.init();
     }
 
     @Override
     public void init() {
-        this.slotSharding.registerHandledSlotChangeListener((slotIdList) -> {
-            this.internalImpl.changeHandledSlot(slotIdList);
-        });
-
-        this.slotSharding.registerServer2SlotChangeListener((server2SlotMap) -> {
-            //TODO： update schedule client server2SlotMap
-        });
+        this.slotSharding.registerListener(this);
     }
 
     @Override
     public ScheduleServerGrpc.PushTaskReply.ResultCode push(ScheduleServerGrpc.PushTaskRequest pushTaskRequest) {
-        ScheduleEntry scheduleEntry = new ScheduleEntry();
+        ScheduleEntry scheduleEntry = convertToScheduleEntry(pushTaskRequest);
 
-        ScheduleServerGrpc.PushTaskReply.ResultCode internalPushResultCode = this.internalImpl.push(scheduleEntry);
-        if (internalPushResultCode != ScheduleServerGrpc.PushTaskReply.ResultCode.NotHandled) {
-            return internalPushResultCode;
+        ScheduleServerGrpc.PushTaskReply.ResultCode localPushResultCode = this.localScheduleManagerImpl.push(scheduleEntry);
+        if (localPushResultCode != ScheduleServerGrpc.PushTaskReply.ResultCode.NotHandled) {
+            return localPushResultCode;
         }
 
+        if (pushTaskRequest.getTransferCount() >= DEFAULT_MAX_TRANSFER_COUNT) {
+            return localPushResultCode;
+        }
+
+        ScheduleServerGrpc.PushTaskRequest transferRequest = pushTaskRequest.toBuilder().setTransferCount(pushTaskRequest.getTransferCount() + 1).build();
         //如果当前SchedulerServer不负责该处理就尝试调用远程Server
-        return this.scheduleClient.push(pushTaskRequest, scheduleEntry.getSlotId());
+        return this.scheduleClient.push(transferRequest, scheduleEntry.getSlotId());
+    }
+
+    private ScheduleEntry convertToScheduleEntry(ScheduleServerGrpc.PushTaskRequest pushTaskRequest) {
+        ScheduleEntry scheduleEntry = new ScheduleEntry();
+        scheduleEntry.setId(pushTaskRequest.getId());
+        scheduleEntry.setType(pushTaskRequest.getType());
+        scheduleEntry.setPayload(pushTaskRequest.getPayload());
+        scheduleEntry.setNextScheduleTime(pushTaskRequest.getScheduleTime());
+
+        return scheduleEntry;
+    }
+
+    @Override
+    public void onHandledSlotChange(List<Integer> slotIdList) {
+        this.localScheduleManagerImpl.changeHandledSlot(slotIdList);
+    }
+
+    @Override
+    public void Server2SlotChange(Map<SlotSharding.ServiceInstance, List<Integer>> server2SlotMap) {
+
     }
 
     /**
-     * 当前内存中实现的ScheduleManager
+     * 当前实例中实现的ScheduleManager
      */
-    public static class InternalScheduleManagerImpl {
-        private Logger logger = LoggerFactory.getLogger(InternalScheduleManagerImpl.class);
+    public static class LocalScheduleManagerImpl {
+        private Logger logger = LoggerFactory.getLogger(LocalScheduleManagerImpl.class);
 
         private ReentrantReadWriteLock handledSlotSetLock = new ReentrantReadWriteLock();
 
@@ -102,16 +119,16 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
          */
         private ExecutorService loadFromDBThreadPool;
 
-        public InternalScheduleManagerImpl(ScheduleTaskExecutor taskExecutor,
-                                           DelayTaskStorage delayTaskStorage) {
+        public LocalScheduleManagerImpl(ScheduleTaskExecutor taskExecutor,
+                                        DelayTaskStorage delayTaskStorage) {
             this(new Timer(DEFAULT_TIMER_TICK, DEFAULT_TIMER_WHEEL_SIZE),
                     taskExecutor,
                     delayTaskStorage);
         }
 
-        public InternalScheduleManagerImpl(Timer timer,
-                                           ScheduleTaskExecutor taskExecutor,
-                                           DelayTaskStorage delayTaskStorage) {
+        public LocalScheduleManagerImpl(Timer timer,
+                                        ScheduleTaskExecutor taskExecutor,
+                                        DelayTaskStorage delayTaskStorage) {
             this.timer = timer;
             this.taskExecutor = taskExecutor;
             this.delayTaskStorage = delayTaskStorage;
@@ -143,6 +160,7 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
             } finally {
                 handledSlotSetLock.readLock().unlock();
             }
+
             return ScheduleServerGrpc.PushTaskReply.ResultCode.Success;
         }
 
@@ -160,7 +178,7 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
         }
 
         /**
-         * 重新设置SlotRange
+         * 重新设置所负责的SlotIdList
          *
          * @param newSlotIdList
          */
@@ -253,4 +271,5 @@ public class DefaultScheduleManagerImpl implements ScheduleManager {
 
             return sdt;
         }
-    }}
+    }
+}

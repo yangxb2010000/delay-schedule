@@ -6,7 +6,6 @@ import lombok.ToString;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * 基于slot的方式实现的分片机制 slot的机制类似于redis cluster的slot分片方式
@@ -42,18 +41,11 @@ public interface SlotSharding {
     List<Integer> getHandledSlots();
 
     /**
-     * 注册当前实例覆盖的slotId list变化的事件, 当前方法被调用时，如果HandledSlot不为空，就直接触发一次事件。
+     * 注册监听SlotSharding变化的Listener
      *
      * @return
      */
-    void registerHandledSlotChangeListener(Consumer<List<Integer>> slotChangeListener);
-
-    /**
-     * 注册ScheduleServer实例与Slot对应关系变化的事件, 当前方法被调用时，如果Server2Slot不为空，就直接触发一次事件。
-     *
-     * @return
-     */
-    void registerServer2SlotChangeListener(Consumer<Map<ServiceInstance, List<Integer>>> slotChangeListener);
+    void registerListener(SlotShardingListener slotChangeListener);
 
     @Data
     @ToString
@@ -61,5 +53,11 @@ public interface SlotSharding {
     class ServiceInstance {
         private String ip;
         private String port;
+    }
+
+    interface SlotShardingListener {
+        void onHandledSlotChange(List<Integer> slotIdList);
+
+        void Server2SlotChange(Map<ServiceInstance, List<Integer>> server2SlotMap);
     }
 }
